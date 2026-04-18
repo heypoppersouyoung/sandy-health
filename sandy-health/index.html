@@ -28,7 +28,7 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .main{max-width:760px;margin:0 auto;padding:20px 24px 60px;}
 .banner{border-radius:var(--radius);padding:12px 16px;font-size:13px;line-height:1.7;margin-bottom:16px;border:1px solid transparent;}
 .banner.red{background:var(--red-light);border-color:#EFBBB8;color:#7B1F1A;}
-.banner.green{background:#E8F5EE;border-color:#B2D9C3;color:#1A5233;}
+.banner.green{background:var(--green-light);border-color:#B2D9C3;color:#1A5233;}
 .banner.amber{background:var(--amber-light);border-color:#F0D89A;color:#7A4D05;}
 .banner-title{font-weight:700;margin-bottom:2px;}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
@@ -45,18 +45,24 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .submit-btn:hover{opacity:0.75;}
 .submit-btn:disabled{opacity:0.4;cursor:default;}
 .save-status{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;text-align:right;margin-top:8px;min-height:16px;}
-.photo-input-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px;}
-.photo-preview{width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid var(--border);}
-.photo-preview-wrap{position:relative;display:inline-block;}
-.photo-remove-new{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;}
 .stool-quality{display:none;gap:8px;margin-top:6px;}
 .stool-quality.show{display:flex;}
 .sq-btn{flex:1;padding:6px;border:1px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--ink2);}
-.sq-btn.selected-normal{background:#E8F5EE;border-color:#B2D9C3;color:#1A5233;font-weight:500;}
+.sq-btn.selected-normal{background:var(--green-light);border-color:#B2D9C3;color:#1A5233;font-weight:500;}
 .sq-btn.selected-abnormal{background:var(--red-light);border-color:#EFBBB8;color:#7B1F1A;font-weight:500;}
+/* 照片預覽區 */
+.photos-preview-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.photo-thumb-wrap{position:relative;}
+.photo-thumb{width:70px;height:70px;object-fit:cover;border-radius:6px;border:1px solid var(--border);display:block;}
+.photo-thumb-del{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.add-photo-slot{width:70px;height:70px;border:1.5px dashed var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink3);font-size:22px;background:transparent;}
+.add-photo-slot:hover{border-color:var(--ink);color:var(--ink);}
+.hidden-file{display:none;}
+/* Filter */
 .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
 .fbtn{font-size:12px;padding:4px 12px;border-radius:99px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--ink2);font-family:'Noto Sans TC',sans-serif;}
 .fbtn.on{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+/* Timeline */
 .day-block{margin-bottom:28px;}
 .day-hdr{font-size:11px;font-weight:700;color:var(--ink3);letter-spacing:1.5px;font-family:'DM Mono',monospace;margin-bottom:10px;padding-left:32px;}
 .ev-row{display:flex;gap:10px;align-items:flex-start;padding:4px 0;}
@@ -65,7 +71,7 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .ev-line{width:1px;flex:1;background:var(--border);min-height:20px;}
 .ev-card{flex:1;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;}
 .ev-card.u-red{background:var(--red-light);border-color:#EFBBB8;}
-.ev-card.u-green{background:#E8F5EE;border-color:#B2D9C3;}
+.ev-card.u-green{background:var(--green-light);border-color:#B2D9C3;}
 .ev-card.u-purple{background:var(--purple-light);border-color:#C9BCEF;}
 .ev-card.u-amber{background:var(--amber-light);border-color:#F0D89A;}
 .ev-card-top{display:flex;justify-content:space-between;align-items:flex-start;}
@@ -74,13 +80,14 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .ev-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;}
 .ev-tag{font-size:11px;padding:2px 8px;border-radius:99px;font-weight:500;white-space:nowrap;}
 .ev-note{font-size:12px;color:var(--ink2);}
-.ev-photo{margin-top:6px;position:relative;display:inline-block;}
-.ev-photo img{max-width:100%;max-height:200px;border-radius:6px;border:1px solid var(--border);cursor:pointer;object-fit:cover;display:block;}
-.ev-photo-del{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:4px;font-size:11px;padding:2px 6px;cursor:pointer;}
+/* 時間線照片格 */
+.ev-photos{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.ev-photo-wrap{position:relative;}
+.ev-photo-img{width:80px;height:80px;object-fit:cover;border-radius:6px;border:1px solid var(--border);cursor:pointer;display:block;}
+.ev-photo-del{position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:3px;font-size:10px;padding:1px 5px;cursor:pointer;}
 .action-btn{background:none;border:1px solid var(--border);cursor:pointer;color:var(--ink3);font-size:11px;padding:2px 7px;border-radius:4px;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;}
 .action-btn:hover{border-color:var(--ink);color:var(--ink);}
 .action-btn.danger:hover{border-color:var(--red);color:var(--red);}
-/* 編輯面板 */
 .edit-panel{display:none;margin-top:8px;padding:10px;background:rgba(0,0,0,0.03);border-radius:8px;border:1px solid var(--border);}
 .edit-panel.show{display:block;}
 .edit-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;}
@@ -88,10 +95,10 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .edit-row input:focus{border-color:var(--ink);}
 .edit-save-btn{background:var(--ink);color:var(--cream);border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;}
 .edit-save-btn:disabled{opacity:0.4;}
-/* 補照片面板 */
 .photo-panel{display:none;margin-top:8px;padding:10px;background:rgba(0,0,0,0.03);border-radius:8px;border:1px solid var(--border);}
-.photo-panel.show{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.photo-panel input[type=file]{font-size:12px;}
+.photo-panel.show{display:block;}
+.photo-panel-hint{font-size:12px;color:var(--ink3);margin-bottom:8px;}
+.photo-panel-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
 .photo-save-btn{background:var(--ink);color:var(--cream);border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;}
 .photo-save-btn:disabled{opacity:0.4;}
 .loading{text-align:center;padding:40px;color:var(--ink3);font-size:13px;}
@@ -146,10 +153,12 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
       <button class="sq-btn" id="sq-normal" onclick="selectStoolQuality('normal')">✓ 正常便便</button>
       <button class="sq-btn" id="sq-abnormal" onclick="selectStoolQuality('abnormal')">✕ 異常（羊便便／稀）</button>
     </div>
-    <div class="photo-input-row">
-      <input type="file" id="f-photo" accept="image/*" onchange="onPhotoSelected()"/>
-      <div id="photo-preview-area"></div>
+    <!-- 新增：最多3張照片 -->
+    <div class="photos-preview-row" id="new-photos-row">
+      <div class="add-photo-slot" onclick="document.getElementById('f-photo-0').click()" id="slot-0">＋</div>
+      <input type="file" class="hidden-file" id="f-photo-0" accept="image/*" onchange="onNewPhotoSelected(0)"/>
     </div>
+    <div style="font-size:11px;color:var(--ink3);margin-top:4px;">最多可附 3 張照片</div>
     <div class="save-status" id="save-status"></div>
   </div>
 
@@ -197,10 +206,11 @@ const TM={
   other:  {label:'其他',    color:'#5A5750',bg:'#F1EFE8',dot:'#9A9590'},
 };
 
+const MAX_PHOTOS=3;
 let events=[];
 let activeFilter='all';
 let stoolQuality=null;
-let photoBase64=null;
+let newPhotos=[]; // array of base64, max 3
 
 function pad(n){return String(n).padStart(2,'0');}
 function todayStr(){const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
@@ -228,6 +238,40 @@ function compressAndRead(file,cb){
   reader.readAsDataURL(file);
 }
 
+// 新增表單照片
+window.onNewPhotoSelected=function(idx){
+  const input=document.getElementById('f-photo-'+idx);
+  const file=input.files[0];
+  if(!file) return;
+  compressAndRead(file,b64=>{
+    if(idx<newPhotos.length) newPhotos[idx]=b64;
+    else newPhotos.push(b64);
+    renderNewPhotos();
+  });
+}
+
+function renderNewPhotos(){
+  const row=document.getElementById('new-photos-row');
+  let html='';
+  newPhotos.forEach((b64,i)=>{
+    html+=`<div class="photo-thumb-wrap">
+      <img src="${b64}" class="photo-thumb"/>
+      <button class="photo-thumb-del" onclick="removeNewPhoto(${i})">✕</button>
+    </div>`;
+  });
+  if(newPhotos.length<MAX_PHOTOS){
+    const nextIdx=newPhotos.length;
+    html+=`<div class="add-photo-slot" onclick="document.getElementById('f-photo-${nextIdx}').click()">＋</div>
+    <input type="file" class="hidden-file" id="f-photo-${nextIdx}" accept="image/*" onchange="onNewPhotoSelected(${nextIdx})"/>`;
+  }
+  row.innerHTML=html;
+}
+
+window.removeNewPhoto=function(idx){
+  newPhotos.splice(idx,1);
+  renderNewPhotos();
+}
+
 window.onTypeChange=function(){
   const t=document.getElementById('f-type').value;
   const sq=document.getElementById('stool-quality');
@@ -241,38 +285,14 @@ window.selectStoolQuality=function(q){
   document.getElementById('sq-abnormal').className='sq-btn'+(q==='abnormal'?' selected-abnormal':'');
 }
 
-window.onPhotoSelected=function(){
-  const file=document.getElementById('f-photo').files[0];
-  if(!file) return;
-  compressAndRead(file,b64=>{
-    photoBase64=b64;
-    document.getElementById('photo-preview-area').innerHTML=`
-      <div class="photo-preview-wrap">
-        <img src="${b64}" class="photo-preview"/>
-        <button class="photo-remove-new" onclick="removePhoto()">✕</button>
-      </div>`;
-  });
-}
-
-window.removePhoto=function(){
-  photoBase64=null;
-  document.getElementById('f-photo').value='';
-  document.getElementById('photo-preview-area').innerHTML='';
-}
-
 window.openLightbox=function(src){
   document.getElementById('lightbox-img').src=src;
   document.getElementById('lightbox').classList.add('show');
 }
 window.closeLightbox=function(){document.getElementById('lightbox').classList.remove('show');}
 
-// 切換編輯面板
-window.toggleEdit=function(sid){
-  const p=document.getElementById('edit-panel-'+sid);
-  p.classList.toggle('show');
-}
+window.toggleEdit=function(sid){document.getElementById('edit-panel-'+sid).classList.toggle('show');}
 
-// 儲存編輯
 window.saveEdit=async function(docId,sid){
   const time=document.getElementById('edit-time-'+sid).value;
   const note=document.getElementById('edit-note-'+sid).value;
@@ -287,38 +307,47 @@ window.saveEdit=async function(docId,sid){
   btn.disabled=false;btn.textContent='儲存';
 }
 
-// 切換補照片面板
-window.togglePhoto=function(sid){
-  const p=document.getElementById('photo-panel-'+sid);
-  p.classList.toggle('show');
-}
+window.togglePhotoPanel=function(sid){document.getElementById('photo-panel-'+sid).classList.toggle('show');}
 
-// 補照片選擇
-window.onPanelPhotoSelected=function(sid){
-  const input=document.getElementById('panel-file-'+sid);
+// 補照片面板
+window.onPanelPhotoSelected=function(sid,idx){
+  const input=document.getElementById(`panel-file-${sid}-${idx}`);
   const file=input.files[0];
   if(!file) return;
-  compressAndRead(file,b64=>{input.dataset.b64=b64;});
+  compressAndRead(file,b64=>{
+    input.dataset.b64=b64;
+    const preview=document.getElementById(`panel-preview-${sid}-${idx}`);
+    if(preview){preview.src=b64;preview.style.display='block';}
+  });
 }
 
-// 儲存補照片
-window.savePanelPhoto=async function(docId,sid){
-  const input=document.getElementById('panel-file-'+sid);
-  const b64=input.dataset.b64;
-  if(!b64){alert('請先選擇照片');return;}
+window.savePanelPhotos=async function(docId,sid){
+  // 收集現有照片 + 新選照片，合併後存
+  const existingEvent=events.find(e=>e.id===docId);
+  let photos=existingEvent&&existingEvent.photos?[...existingEvent.photos]:
+             existingEvent&&existingEvent.photo?[existingEvent.photo]:[];
+  // 找新選的
+  for(let i=0;i<MAX_PHOTOS;i++){
+    const inp=document.getElementById(`panel-file-${sid}-${i}`);
+    if(inp&&inp.dataset.b64) photos.push(inp.dataset.b64);
+  }
+  photos=photos.slice(0,MAX_PHOTOS);
   const btn=document.getElementById('photo-save-'+sid);
   btn.disabled=true;btn.textContent='儲存中…';
   try{
-    await updateDoc(doc(db,'events',docId),{photo:b64});
+    await updateDoc(doc(db,'events',docId),{photos,photo:null});
     document.getElementById('photo-panel-'+sid).classList.remove('show');
   }catch(e){alert('儲存失敗：'+e.message);}
   btn.disabled=false;btn.textContent='儲存照片';
 }
 
-// 刪除照片
-window.deletePhoto=async function(docId){
-  if(!confirm('確定刪除這張照片？記錄本身會保留。')) return;
-  await updateDoc(doc(db,'events',docId),{photo:null});
+window.deletePhoto=async function(docId,idx){
+  if(!confirm('確定刪除這張照片？')) return;
+  const existingEvent=events.find(e=>e.id===docId);
+  let photos=existingEvent&&existingEvent.photos?[...existingEvent.photos]:
+             existingEvent&&existingEvent.photo?[existingEvent.photo]:[];
+  photos.splice(idx,1);
+  await updateDoc(doc(db,'events',docId),{photos,photo:null});
 }
 
 const q=query(collection(db,"events"),orderBy("datetime","desc"));
@@ -350,14 +379,14 @@ window.addEvent=async function(){
       med:type==='medical',
       doc:type==='medical'&&note.includes('醫師'),
       stoolQuality:type==='stool'?(stoolQuality||null):null,
-      photo:photoBase64||null,
+      photos:[...newPhotos],
+      photo:null,
       datetime:date+'T'+time
     });
     document.getElementById('f-note').value='';
     document.getElementById('f-time').value=nowT();
-    stoolQuality=null;photoBase64=null;
-    document.getElementById('f-photo').value='';
-    document.getElementById('photo-preview-area').innerHTML='';
+    stoolQuality=null;newPhotos=[];
+    renderNewPhotos();
     document.getElementById('sq-normal').className='sq-btn';
     document.getElementById('sq-abnormal').className='sq-btn';
     document.getElementById('stool-quality').classList.remove('show');
@@ -380,6 +409,12 @@ window.setFilter=function(f,btn){
   document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   renderTimeline();
+}
+
+function getPhotos(e){
+  if(e.photos&&e.photos.length>0) return e.photos;
+  if(e.photo) return [e.photo];
+  return [];
 }
 
 function renderBanner(){
@@ -428,8 +463,9 @@ function renderTimeline(){
       else if(e.good) cls='ev-card u-green';
       else if(e.med) cls='ev-card u-purple';
       else if(e.doc) cls='ev-card u-amber';
-
       const sid=e.id.replace(/[^a-zA-Z0-9]/g,'_');
+      const photos=getPhotos(e);
+      const remaining=MAX_PHOTOS-photos.length;
 
       let qualityBadge='';
       if(e.type==='stool'&&e.stoolQuality){
@@ -438,11 +474,24 @@ function renderTimeline(){
           :`<span style="font-size:11px;padding:2px 7px;border-radius:99px;background:#FDECEA;color:#7B1F1A;font-weight:500;">異常</span>`;
       }
 
-      let photoHtml='';
-      if(e.photo){
-        photoHtml=`<div class="ev-photo">
-          <img src="${e.photo}" onclick="openLightbox('${e.photo}')" title="點擊放大"/>
-          <button class="ev-photo-del" onclick="deletePhoto('${e.id}')">刪除照片</button>
+      let photosHtml='';
+      if(photos.length>0){
+        photosHtml='<div class="ev-photos">';
+        photos.forEach((p,pi)=>{
+          photosHtml+=`<div class="ev-photo-wrap">
+            <img src="${p}" class="ev-photo-img" onclick="openLightbox('${p}')" title="點擊放大"/>
+            <button class="ev-photo-del" onclick="deletePhoto('${e.id}',${pi})">刪</button>
+          </div>`;
+        });
+        photosHtml+='</div>';
+      }
+
+      // 補照片面板：顯示還能補幾張
+      let panelSlotsHtml='';
+      for(let pi=0;pi<remaining;pi++){
+        panelSlotsHtml+=`<div>
+          <input type="file" id="panel-file-${sid}-${pi}" accept="image/*" onchange="onPanelPhotoSelected('${sid}',${pi})" style="font-size:12px;"/>
+          <img id="panel-preview-${sid}-${pi}" src="" style="width:50px;height:50px;object-fit:cover;border-radius:4px;display:none;margin-top:4px;"/>
         </div>`;
       }
 
@@ -463,11 +512,11 @@ function renderTimeline(){
             </div>
             <div class="ev-card-actions">
               <button class="action-btn" onclick="toggleEdit('${sid}')">編輯</button>
-              <button class="action-btn" onclick="togglePhoto('${sid}')">${e.photo?'換照片':'補照片'}</button>
+              ${remaining>0?`<button class="action-btn" onclick="togglePhotoPanel('${sid}')">補照片</button>`:''}
               <button class="action-btn danger" onclick="deleteEvent('${e.id}')">刪除</button>
             </div>
           </div>
-          ${photoHtml}
+          ${photosHtml}
           <div class="edit-panel" id="edit-panel-${sid}">
             <div class="edit-row">
               <input type="date" id="edit-date-${sid}" value="${e.date}" style="max-width:130px"/>
@@ -476,10 +525,11 @@ function renderTimeline(){
               <button class="edit-save-btn" id="edit-save-${sid}" onclick="saveEdit('${e.id}','${sid}')">儲存</button>
             </div>
           </div>
-          <div class="photo-panel" id="photo-panel-${sid}">
-            <input type="file" id="panel-file-${sid}" accept="image/*" onchange="onPanelPhotoSelected('${sid}')"/>
-            <button class="photo-save-btn" id="photo-save-${sid}" onclick="savePanelPhoto('${e.id}','${sid}')">儲存照片</button>
-          </div>
+          ${remaining>0?`<div class="photo-panel" id="photo-panel-${sid}">
+            <div class="photo-panel-hint">還可以補 ${remaining} 張照片（目前 ${photos.length} 張）</div>
+            <div class="photo-panel-row">${panelSlotsHtml}</div>
+            <button class="photo-save-btn" id="photo-save-${sid}" onclick="savePanelPhotos('${e.id}','${sid}')" style="margin-top:8px;">儲存照片</button>
+          </div>`:''}
         </div>
       </div>`;
     });
