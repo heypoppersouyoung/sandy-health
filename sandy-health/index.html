@@ -25,6 +25,8 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .header-meta{font-size:12px;color:var(--ink3);font-family:'DM Mono',monospace;}
 .sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#aaa;margin-right:5px;vertical-align:middle;}
 .sync-dot.live{background:#2A7D4F;}
+.lock-btn{font-size:11px;padding:3px 10px;border-radius:99px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--ink3);font-family:'Noto Sans TC',sans-serif;}
+.lock-btn.unlocked{border-color:#2A7D4F;color:#2A7D4F;}
 .main{max-width:760px;margin:0 auto;padding:20px 24px 60px;}
 .banner{border-radius:var(--radius);padding:12px 16px;font-size:13px;line-height:1.7;margin-bottom:16px;border:1px solid transparent;}
 .banner.red{background:var(--red-light);border-color:#EFBBB8;color:#7B1F1A;}
@@ -35,7 +37,9 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .stat{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;}
 .stat-lbl{font-size:11px;color:var(--ink3);margin-bottom:4px;font-family:'DM Mono',monospace;}
 .stat-val{font-size:22px;font-weight:700;}
-.add-form{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:24px;}
+/* 新增表單 */
+.add-form{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:24px;display:none;}
+.add-form.show{display:block;}
 .form-title{font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:12px;letter-spacing:0.5px;text-transform:uppercase;}
 .form-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
 .form-row input,.form-row select{flex:1;min-width:90px;font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);outline:none;}
@@ -45,12 +49,12 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .submit-btn:hover{opacity:0.75;}
 .submit-btn:disabled{opacity:0.4;cursor:default;}
 .save-status{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;text-align:right;margin-top:8px;min-height:16px;}
-.stool-quality{display:none;gap:8px;margin-top:6px;}
-.stool-quality.show{display:flex;}
-.sq-btn{flex:1;padding:6px;border:1px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--ink2);}
-.sq-btn.selected-normal{background:var(--green-light);border-color:#B2D9C3;color:#1A5233;font-weight:500;}
-.sq-btn.selected-abnormal{background:var(--red-light);border-color:#EFBBB8;color:#7B1F1A;font-weight:500;}
-/* 照片預覽區 */
+/* 正常/異常選擇 - 通用 */
+.quality-row{display:flex;gap:8px;margin-top:6px;}
+.q-btn{flex:1;padding:6px;border:1px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--ink2);}
+.q-btn.sel-normal{background:var(--green-light);border-color:#B2D9C3;color:#1A5233;font-weight:500;}
+.q-btn.sel-abnormal{background:var(--red-light);border-color:#EFBBB8;color:#7B1F1A;font-weight:500;}
+/* 照片 */
 .photos-preview-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
 .photo-thumb-wrap{position:relative;}
 .photo-thumb{width:70px;height:70px;object-fit:cover;border-radius:6px;border:1px solid var(--border);display:block;}
@@ -80,7 +84,6 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .ev-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;}
 .ev-tag{font-size:11px;padding:2px 8px;border-radius:99px;font-weight:500;white-space:nowrap;}
 .ev-note{font-size:12px;color:var(--ink2);}
-/* 時間線照片格 */
 .ev-photos{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
 .ev-photo-wrap{position:relative;}
 .ev-photo-img{width:80px;height:80px;object-fit:cover;border-radius:6px;border:1px solid var(--border);cursor:pointer;display:block;}
@@ -91,17 +94,28 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .edit-panel{display:none;margin-top:8px;padding:10px;background:rgba(0,0,0,0.03);border-radius:8px;border:1px solid var(--border);}
 .edit-panel.show{display:block;}
 .edit-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;}
-.edit-row input{flex:1;min-width:80px;font-family:'Noto Sans TC',sans-serif;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--ink);outline:none;}
-.edit-row input:focus{border-color:var(--ink);}
+.edit-row input,.edit-row select{flex:1;min-width:80px;font-family:'Noto Sans TC',sans-serif;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--ink);outline:none;}
 .edit-save-btn{background:var(--ink);color:var(--cream);border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;}
 .edit-save-btn:disabled{opacity:0.4;}
 .photo-panel{display:none;margin-top:8px;padding:10px;background:rgba(0,0,0,0.03);border-radius:8px;border:1px solid var(--border);}
 .photo-panel.show{display:block;}
 .photo-panel-hint{font-size:12px;color:var(--ink3);margin-bottom:8px;}
 .photo-panel-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-.photo-save-btn{background:var(--ink);color:var(--cream);border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;}
+.photo-save-btn{background:var(--ink);color:var(--cream);border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-top:8px;}
 .photo-save-btn:disabled{opacity:0.4;}
 .loading{text-align:center;padding:40px;color:var(--ink3);font-size:13px;}
+/* 密碼 modal */
+.pw-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;}
+.pw-overlay.show{display:flex;}
+.pw-box{background:var(--cream);border-radius:var(--radius);padding:28px 24px;width:280px;text-align:center;}
+.pw-title{font-size:16px;font-weight:700;margin-bottom:8px;}
+.pw-sub{font-size:13px;color:var(--ink3);margin-bottom:16px;}
+.pw-input{width:100%;font-family:'DM Mono',monospace;font-size:20px;letter-spacing:8px;text-align:center;padding:10px;border:1px solid var(--border);border-radius:8px;outline:none;background:#fff;color:var(--ink);}
+.pw-input:focus{border-color:var(--ink);}
+.pw-error{font-size:12px;color:var(--red);margin-top:8px;min-height:16px;}
+.pw-btn{margin-top:12px;width:100%;background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:10px;font-size:14px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;}
+.pw-cancel{margin-top:8px;background:none;border:none;font-size:12px;color:var(--ink3);cursor:pointer;font-family:'Noto Sans TC',sans-serif;}
+/* Lightbox */
 .lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;}
 .lightbox.show{display:flex;}
 .lightbox img{max-width:90%;max-height:90%;border-radius:8px;}
@@ -119,7 +133,10 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
       <div class="cat-name">珊迪 Sandy <span class="cat-badge">CKD 監測中</span></div>
       <div class="header-meta">主治：沈醫師 @ 恩亞動物醫院 · 記錄自 2026-04-16</div>
     </div>
-    <div class="header-meta"><span class="sync-dot" id="sync-dot"></span><span id="last-updated">連線中…</span></div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="header-meta"><span class="sync-dot" id="sync-dot"></span><span id="last-updated">連線中…</span></div>
+      <button class="lock-btn" id="lock-btn" onclick="toggleLock()">🔒 編輯模式</button>
+    </div>
   </div>
 </header>
 
@@ -131,16 +148,17 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
     <div class="stat"><div class="stat-lbl">今日異常事件</div><div class="stat-val" style="color:var(--red)">—</div></div>
   </div>
 
-  <div class="add-form">
+  <div class="add-form" id="add-form">
     <div class="form-title">新增記錄</div>
     <div class="form-row">
       <input type="date" id="f-date" style="max-width:145px"/>
       <input type="time" id="f-time" style="max-width:95px"/>
-      <select id="f-type" style="max-width:150px" onchange="onTypeChange()">
+      <select id="f-type" style="max-width:160px">
         <option value="urine">排尿</option>
         <option value="stool">排便</option>
         <option value="drink">喝水</option>
         <option value="eat">進食</option>
+        <option value="medicine">餵藥</option>
         <option value="vomit">嘔吐</option>
         <option value="medical">就醫／處置</option>
         <option value="alert">異常行為</option>
@@ -149,13 +167,14 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
       <input type="text" id="f-note" placeholder="備註（可選）"/>
       <button class="submit-btn" id="submit-btn" onclick="addEvent()">新增</button>
     </div>
-    <div class="stool-quality" id="stool-quality">
-      <button class="sq-btn" id="sq-normal" onclick="selectStoolQuality('normal')">✓ 正常便便</button>
-      <button class="sq-btn" id="sq-abnormal" onclick="selectStoolQuality('abnormal')">✕ 異常（羊便便／稀）</button>
+    <!-- 通用正常/異常標記 -->
+    <div class="quality-row">
+      <button class="q-btn" id="q-normal" onclick="selectQuality('normal')">✓ 正常</button>
+      <button class="q-btn" id="q-abnormal" onclick="selectQuality('abnormal')">✕ 異常</button>
+      <button class="q-btn" id="q-none" onclick="selectQuality(null)" style="flex:0.5;">不標記</button>
     </div>
-    <!-- 新增：最多3張照片 -->
     <div class="photos-preview-row" id="new-photos-row">
-      <div class="add-photo-slot" onclick="document.getElementById('f-photo-0').click()" id="slot-0">＋</div>
+      <div class="add-photo-slot" onclick="document.getElementById('f-photo-0').click()">＋</div>
       <input type="file" class="hidden-file" id="f-photo-0" accept="image/*" onchange="onNewPhotoSelected(0)"/>
     </div>
     <div style="font-size:11px;color:var(--ink3);margin-top:4px;">最多可附 3 張照片</div>
@@ -168,10 +187,23 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
     <button class="fbtn" onclick="setFilter('stool',this)">排便</button>
     <button class="fbtn" onclick="setFilter('drink',this)">喝水</button>
     <button class="fbtn" onclick="setFilter('eat',this)">進食</button>
+    <button class="fbtn" onclick="setFilter('medicine',this)">餵藥</button>
     <button class="fbtn" onclick="setFilter('medical',this)">就醫</button>
     <button class="fbtn" onclick="setFilter('alert',this)">異常</button>
   </div>
   <div id="timeline-area"><div class="loading">連線資料庫中…</div></div>
+</div>
+
+<!-- 密碼 Modal -->
+<div class="pw-overlay" id="pw-overlay">
+  <div class="pw-box">
+    <div class="pw-title">輸入編輯密碼</div>
+    <div class="pw-sub">請輸入密碼以進入編輯模式</div>
+    <input type="password" class="pw-input" id="pw-input" maxlength="10" onkeydown="if(event.key==='Enter')checkPw()"/>
+    <div class="pw-error" id="pw-error"></div>
+    <button class="pw-btn" onclick="checkPw()">確認</button>
+    <br/><button class="pw-cancel" onclick="closePwModal()">取消</button>
+  </div>
 </div>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
@@ -196,21 +228,24 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const TM={
-  urine:  {label:'排尿',    color:'#185FA5',bg:'#DCEEFB',dot:'#378ADD'},
-  stool:  {label:'排便',    color:'#2A5C1A',bg:'#D6EDD9',dot:'#4A9B3A'},
-  drink:  {label:'喝水',    color:'#0F5E56',bg:'#D1EDE9',dot:'#1D9E75'},
-  eat:    {label:'進食',    color:'#7A4D05',bg:'#FDE8B8',dot:'#D4890A'},
-  vomit:  {label:'嘔吐',    color:'#7B1F1A',bg:'#FDECEA',dot:'#C0392B'},
-  medical:{label:'就醫',    color:'#3A2580',bg:'#E5DFFD',dot:'#7B6BC8'},
-  alert:  {label:'異常行為',color:'#7B1F1A',bg:'#FDECEA',dot:'#C0392B'},
-  other:  {label:'其他',    color:'#5A5750',bg:'#F1EFE8',dot:'#9A9590'},
+  urine:   {label:'排尿',    color:'#185FA5',bg:'#DCEEFB',dot:'#378ADD'},
+  stool:   {label:'排便',    color:'#2A5C1A',bg:'#D6EDD9',dot:'#4A9B3A'},
+  drink:   {label:'喝水',    color:'#0F5E56',bg:'#D1EDE9',dot:'#1D9E75'},
+  eat:     {label:'進食',    color:'#7A4D05',bg:'#FDE8B8',dot:'#D4890A'},
+  medicine:{label:'餵藥',    color:'#5B3FA6',bg:'#EEE9FC',dot:'#7B6BC8'},
+  vomit:   {label:'嘔吐',    color:'#7B1F1A',bg:'#FDECEA',dot:'#C0392B'},
+  medical: {label:'就醫',    color:'#3A2580',bg:'#E5DFFD',dot:'#7B6BC8'},
+  alert:   {label:'異常行為',color:'#7B1F1A',bg:'#FDECEA',dot:'#C0392B'},
+  other:   {label:'其他',    color:'#5A5750',bg:'#F1EFE8',dot:'#9A9590'},
 };
 
+const PASSWORD='520';
 const MAX_PHOTOS=3;
 let events=[];
 let activeFilter='all';
-let stoolQuality=null;
-let newPhotos=[]; // array of base64, max 3
+let quality=null; // 'normal' | 'abnormal' | null
+let newPhotos=[];
+let isUnlocked=false;
 
 function pad(n){return String(n).padStart(2,'0');}
 function todayStr(){const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
@@ -218,7 +253,54 @@ function nowT(){const d=new Date();return `${pad(d.getHours())}:${pad(d.getMinut
 
 document.getElementById('f-date').value=todayStr();
 document.getElementById('f-time').value=nowT();
-setInterval(()=>{document.getElementById('f-time').value=nowT();},30000);
+setInterval(()=>{if(document.getElementById('f-time'))document.getElementById('f-time').value=nowT();},30000);
+
+// 密碼相關
+window.toggleLock=function(){
+  if(isUnlocked){
+    isUnlocked=false;
+    document.getElementById('lock-btn').textContent='🔒 編輯模式';
+    document.getElementById('lock-btn').classList.remove('unlocked');
+    document.getElementById('add-form').classList.remove('show');
+    render();
+  } else {
+    document.getElementById('pw-overlay').classList.add('show');
+    setTimeout(()=>document.getElementById('pw-input').focus(),100);
+  }
+}
+
+window.checkPw=function(){
+  const val=document.getElementById('pw-input').value;
+  if(val===PASSWORD){
+    isUnlocked=true;
+    document.getElementById('pw-overlay').classList.remove('show');
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-error').textContent='';
+    document.getElementById('lock-btn').textContent='🔓 編輯中';
+    document.getElementById('lock-btn').classList.add('unlocked');
+    document.getElementById('add-form').classList.add('show');
+    render();
+  } else {
+    document.getElementById('pw-error').textContent='密碼錯誤，請再試一次';
+    document.getElementById('pw-input').value='';
+  }
+}
+
+window.closePwModal=function(){
+  document.getElementById('pw-overlay').classList.remove('show');
+  document.getElementById('pw-input').value='';
+  document.getElementById('pw-error').textContent='';
+}
+
+// 正常/異常
+window.selectQuality=function(q){
+  quality=q;
+  document.getElementById('q-normal').className='q-btn'+(q==='normal'?' sel-normal':'');
+  document.getElementById('q-abnormal').className='q-btn'+(q==='abnormal'?' sel-abnormal':'');
+  document.getElementById('q-none').className='q-btn'+(q===null?' sel-normal':'');
+}
+// 預設不標記高亮
+selectQuality(null);
 
 function compressAndRead(file,cb){
   const reader=new FileReader();
@@ -238,7 +320,6 @@ function compressAndRead(file,cb){
   reader.readAsDataURL(file);
 }
 
-// 新增表單照片
 window.onNewPhotoSelected=function(idx){
   const input=document.getElementById('f-photo-'+idx);
   const file=input.files[0];
@@ -267,23 +348,7 @@ function renderNewPhotos(){
   row.innerHTML=html;
 }
 
-window.removeNewPhoto=function(idx){
-  newPhotos.splice(idx,1);
-  renderNewPhotos();
-}
-
-window.onTypeChange=function(){
-  const t=document.getElementById('f-type').value;
-  const sq=document.getElementById('stool-quality');
-  if(t==='stool') sq.classList.add('show');
-  else{sq.classList.remove('show');stoolQuality=null;document.getElementById('sq-normal').className='sq-btn';document.getElementById('sq-abnormal').className='sq-btn';}
-}
-
-window.selectStoolQuality=function(q){
-  stoolQuality=q;
-  document.getElementById('sq-normal').className='sq-btn'+(q==='normal'?' selected-normal':'');
-  document.getElementById('sq-abnormal').className='sq-btn'+(q==='abnormal'?' selected-abnormal':'');
-}
+window.removeNewPhoto=function(idx){newPhotos.splice(idx,1);renderNewPhotos();}
 
 window.openLightbox=function(src){
   document.getElementById('lightbox-img').src=src;
@@ -297,19 +362,31 @@ window.saveEdit=async function(docId,sid){
   const time=document.getElementById('edit-time-'+sid).value;
   const note=document.getElementById('edit-note-'+sid).value;
   const date=document.getElementById('edit-date-'+sid).value;
+  const typeEl=document.getElementById('edit-type-'+sid);
+  const type=typeEl?typeEl.value:'other';
+  const sqEl=document.getElementById('edit-sq-'+sid);
+  const editQuality=sqEl?sqEl.value||null:null;
   if(!time||!date) return;
+  const isGood=editQuality==='normal';
+  const isUrgent=type==='alert'||type==='vomit'||editQuality==='abnormal';
   const btn=document.getElementById('edit-save-'+sid);
   btn.disabled=true;btn.textContent='儲存中…';
   try{
-    await updateDoc(doc(db,'events',docId),{time,note,date,datetime:date+'T'+time});
-    document.getElementById('edit-panel-'+sid).classList.remove('show');
+    await updateDoc(doc(db,'events',docId),{
+      time,note,date,type,
+      quality:editQuality,
+      good:isGood,urgent:isUrgent,
+      med:type==='medical',
+      datetime:date+'T'+time
+    });
+    const panel=document.getElementById('edit-panel-'+sid);
+    if(panel) panel.classList.remove('show');
   }catch(e){alert('儲存失敗：'+e.message);}
   btn.disabled=false;btn.textContent='儲存';
 }
 
 window.togglePhotoPanel=function(sid){document.getElementById('photo-panel-'+sid).classList.toggle('show');}
 
-// 補照片面板
 window.onPanelPhotoSelected=function(sid,idx){
   const input=document.getElementById(`panel-file-${sid}-${idx}`);
   const file=input.files[0];
@@ -322,11 +399,9 @@ window.onPanelPhotoSelected=function(sid,idx){
 }
 
 window.savePanelPhotos=async function(docId,sid){
-  // 收集現有照片 + 新選照片，合併後存
   const existingEvent=events.find(e=>e.id===docId);
   let photos=existingEvent&&existingEvent.photos?[...existingEvent.photos]:
              existingEvent&&existingEvent.photo?[existingEvent.photo]:[];
-  // 找新選的
   for(let i=0;i<MAX_PHOTOS;i++){
     const inp=document.getElementById(`panel-file-${sid}-${i}`);
     if(inp&&inp.dataset.b64) photos.push(inp.dataset.b64);
@@ -368,29 +443,23 @@ window.addEvent=async function(){
   if(!date||!time) return;
   const btn=document.getElementById('submit-btn');
   btn.disabled=true;btn.textContent='儲存中…';
-  const isGood=type==='drink'||type==='eat'||
-    (type==='urine'&&!note.includes('無尿'))||
-    (type==='stool'&&stoolQuality==='normal');
-  const isUrgent=type==='alert'||type==='vomit'||
-    (type==='stool'&&stoolQuality==='abnormal');
+  const isGood=quality==='normal';
+  const isUrgent=type==='alert'||type==='vomit'||quality==='abnormal';
   try{
     await addDoc(collection(db,"events"),{
       date,time,type,note,
+      quality,
       urgent:isUrgent,good:isGood,
       med:type==='medical',
-      doc:type==='medical'&&note.includes('醫師'),
-      stoolQuality:type==='stool'?(stoolQuality||null):null,
       photos:[...newPhotos],
       photo:null,
       datetime:date+'T'+time
     });
     document.getElementById('f-note').value='';
     document.getElementById('f-time').value=nowT();
-    stoolQuality=null;newPhotos=[];
+    quality=null;newPhotos=[];
+    selectQuality(null);
     renderNewPhotos();
-    document.getElementById('sq-normal').className='sq-btn';
-    document.getElementById('sq-abnormal').className='sq-btn';
-    document.getElementById('stool-quality').classList.remove('show');
     document.getElementById('f-type').value='urine';
     document.getElementById('save-status').textContent='✓ 已同步至雲端';
     setTimeout(()=>{document.getElementById('save-status').textContent='';},2000);
@@ -418,24 +487,48 @@ function getPhotos(e){
   return [];
 }
 
+function getQuality(e){
+  if(e.quality) return e.quality;
+  if(e.stoolQuality) return e.stoolQuality;
+  if(e.urgent) return 'abnormal';
+  if(e.good) return 'normal';
+  return null;
+}
+
+function getDotColor(e){
+  const q=getQuality(e);
+  if(q==='abnormal'||e.urgent) return '#C0392B';
+  if(q==='normal') return '#2A7D4F';
+  const m=TM[e.type]||TM.other;
+  return m.dot;
+}
+
+function getCardClass(e){
+  const q=getQuality(e);
+  if(q==='abnormal'||e.urgent) return 'ev-card u-red';
+  if(q==='normal') return 'ev-card u-green';
+  if(e.type==='medical') return 'ev-card u-purple';
+  return 'ev-card';
+}
+
 function renderBanner(){
   const te=events.filter(e=>e.date===todayStr());
-  const alertN=te.filter(e=>e.urgent).length;
-  const lastU=events.filter(e=>e.type==='urine'&&e.good).sort((a,b)=>a.datetime<b.datetime?1:-1)[0];
+  const alertN=te.filter(e=>e.urgent||getQuality(e)==='abnormal').length;
+  const lastU=events.filter(e=>e.type==='urine'&&getQuality(e)==='normal').sort((a,b)=>a.datetime<b.datetime?1:-1)[0];
   let sinceH=999;
   if(lastU) sinceH=(Date.now()-new Date(lastU.datetime))/3600000;
   let html='';
   if(sinceH>4) html=`<div class="banner red"><div class="banner-title">警示</div>距離最後一次正常排尿已超過 ${Math.floor(sinceH)} 小時，請立即聯絡沈醫師。</div>`;
-  else if(alertN>0) html=`<div class="banner amber"><div class="banner-title">今日有異常記錄</div>持續觀察頻尿、蹲下無尿、廁所外漏尿等狀況。如症狀持續請聯絡恩亞動物醫院。</div>`;
+  else if(alertN>0) html=`<div class="banner amber"><div class="banner-title">今日有異常記錄</div>如症狀持續請聯絡恩亞動物醫院。</div>`;
   else html=`<div class="banner green"><div class="banner-title">目前狀況穩定</div>今日尚無異常事件記錄，持續觀察中。</div>`;
   document.getElementById('banner-area').innerHTML=html;
 }
 
 function renderStats(){
   const te=events.filter(e=>e.date===todayStr());
-  const urineOk=te.filter(e=>e.type==='urine'&&e.good).length;
-  const stoolOk=te.filter(e=>e.type==='stool'&&e.stoolQuality==='normal').length;
-  const alertN=te.filter(e=>e.urgent).length;
+  const urineOk=te.filter(e=>e.type==='urine'&&getQuality(e)==='normal').length;
+  const stoolOk=te.filter(e=>e.type==='stool'&&getQuality(e)==='normal').length;
+  const alertN=te.filter(e=>e.urgent||getQuality(e)==='abnormal').length;
   document.getElementById('stats-area').innerHTML=`
     <div class="stat"><div class="stat-lbl">今日正常排尿</div><div class="stat-val" style="color:var(--blue)">${urineOk}</div></div>
     <div class="stat"><div class="stat-lbl">今日正常排便</div><div class="stat-val" style="color:var(--green)">${stoolOk}</div></div>
@@ -459,35 +552,30 @@ function renderTimeline(){
     de.forEach((e,i)=>{
       const m=TM[e.type]||TM.other;
       const notLast=i<de.length-1;
-      let cls='ev-card';
-      if(e.urgent) cls='ev-card u-red';
-      else if(e.good) cls='ev-card u-green';
-      else if(e.med) cls='ev-card u-purple';
-      else if(e.doc) cls='ev-card u-amber';
+      const cls=getCardClass(e);
+      const dotColor=getDotColor(e);
       const sid=e.id.replace(/[^a-zA-Z0-9]/g,'_');
       const photos=getPhotos(e);
       const remaining=MAX_PHOTOS-photos.length;
+      const eq=getQuality(e);
 
       let qualityBadge='';
-      if(e.type==='stool'&&e.stoolQuality){
-        qualityBadge=e.stoolQuality==='normal'
-          ?`<span style="font-size:11px;padding:2px 7px;border-radius:99px;background:#D6EDD9;color:#2A5C1A;font-weight:500;">正常</span>`
-          :`<span style="font-size:11px;padding:2px 7px;border-radius:99px;background:#FDECEA;color:#7B1F1A;font-weight:500;">異常</span>`;
-      }
+      if(eq==='normal') qualityBadge=`<span style="font-size:11px;padding:2px 7px;border-radius:99px;background:#D6EDD9;color:#2A5C1A;font-weight:500;">正常</span>`;
+      else if(eq==='abnormal') qualityBadge=`<span style="font-size:11px;padding:2px 7px;border-radius:99px;background:#FDECEA;color:#7B1F1A;font-weight:500;">異常</span>`;
 
       let photosHtml='';
       if(photos.length>0){
         photosHtml='<div class="ev-photos">';
         photos.forEach((p,pi)=>{
+          const psafe=p.replace(/'/g,"\\'");
           photosHtml+=`<div class="ev-photo-wrap">
-            <img src="${p}" class="ev-photo-img" onclick="openLightbox('${p}')" title="點擊放大"/>
-            <button class="ev-photo-del" onclick="deletePhoto('${e.id}',${pi})">刪</button>
+            <img src="${p}" class="ev-photo-img" onclick="openLightbox('${psafe}')" title="點擊放大"/>
+            ${isUnlocked?`<button class="ev-photo-del" onclick="deletePhoto('${e.id}',${pi})">刪</button>`:''}
           </div>`;
         });
         photosHtml+='</div>';
       }
 
-      // 補照片面板：顯示還能補幾張
       let panelSlotsHtml='';
       for(let pi=0;pi<remaining;pi++){
         panelSlotsHtml+=`<div>
@@ -496,9 +584,15 @@ function renderTimeline(){
         </div>`;
       }
 
+      const actionBtns=isUnlocked?`
+        <button class="action-btn" onclick="toggleEdit('${sid}')">編輯</button>
+        ${remaining>0?`<button class="action-btn" onclick="togglePhotoPanel('${sid}')">補照片</button>`:''}
+        <button class="action-btn danger" onclick="deleteEvent('${e.id}')">刪除</button>
+      `:'';
+
       html+=`<div class="ev-row">
         <div class="ev-dot-col">
-          <div class="ev-dot" style="background:${m.dot}"></div>
+          <div class="ev-dot" style="background:${dotColor}"></div>
           ${notLast?'<div class="ev-line"></div>':''}
         </div>
         <div class="${cls}">
@@ -511,26 +605,42 @@ function renderTimeline(){
                 <span class="ev-note">${e.note||''}</span>
               </div>
             </div>
-            <div class="ev-card-actions">
-              <button class="action-btn" onclick="toggleEdit('${sid}')">編輯</button>
-              ${remaining>0?`<button class="action-btn" onclick="togglePhotoPanel('${sid}')">補照片</button>`:''}
-              <button class="action-btn danger" onclick="deleteEvent('${e.id}')">刪除</button>
-            </div>
+            <div class="ev-card-actions">${actionBtns}</div>
           </div>
           ${photosHtml}
+          ${isUnlocked?`
           <div class="edit-panel" id="edit-panel-${sid}">
             <div class="edit-row">
               <input type="date" id="edit-date-${sid}" value="${e.date}" style="max-width:130px"/>
               <input type="time" id="edit-time-${sid}" value="${e.time}" style="max-width:95px"/>
+              <select id="edit-type-${sid}" style="flex:1;min-width:100px;font-family:Noto Sans TC,sans-serif;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--ink);">
+                <option value="urine" ${e.type==='urine'?'selected':''}>排尿</option>
+                <option value="stool" ${e.type==='stool'?'selected':''}>排便</option>
+                <option value="drink" ${e.type==='drink'?'selected':''}>喝水</option>
+                <option value="eat" ${e.type==='eat'?'selected':''}>進食</option>
+                <option value="medicine" ${e.type==='medicine'?'selected':''}>餵藥</option>
+                <option value="vomit" ${e.type==='vomit'?'selected':''}>嘔吐</option>
+                <option value="medical" ${e.type==='medical'?'selected':''}>就醫／處置</option>
+                <option value="alert" ${e.type==='alert'?'selected':''}>異常行為</option>
+                <option value="other" ${e.type==='other'?'selected':''}>其他</option>
+              </select>
+            </div>
+            <div class="edit-row">
               <input type="text" id="edit-note-${sid}" value="${(e.note||'').replace(/"/g,'&quot;')}" placeholder="備註"/>
+              <select id="edit-sq-${sid}" style="flex:0 0 auto;min-width:110px;font-family:Noto Sans TC,sans-serif;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--ink);">
+                <option value="">不標記</option>
+                <option value="normal" ${eq==='normal'?'selected':''}>✓ 正常</option>
+                <option value="abnormal" ${eq==='abnormal'?'selected':''}>✕ 異常</option>
+              </select>
               <button class="edit-save-btn" id="edit-save-${sid}" onclick="saveEdit('${e.id}','${sid}')">儲存</button>
             </div>
           </div>
           ${remaining>0?`<div class="photo-panel" id="photo-panel-${sid}">
             <div class="photo-panel-hint">還可以補 ${remaining} 張照片（目前 ${photos.length} 張）</div>
             <div class="photo-panel-row">${panelSlotsHtml}</div>
-            <button class="photo-save-btn" id="photo-save-${sid}" onclick="savePanelPhotos('${e.id}','${sid}')" style="margin-top:8px;">儲存照片</button>
+            <button class="photo-save-btn" id="photo-save-${sid}" onclick="savePanelPhotos('${e.id}','${sid}')">儲存照片</button>
           </div>`:''}
+          `:''}
         </div>
       </div>`;
     });
