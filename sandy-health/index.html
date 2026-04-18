@@ -31,13 +31,13 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .banner.green{background:var(--green-light);border-color:#B2D9C3;color:#1A5233;}
 .banner.amber{background:var(--amber-light);border-color:#F0D89A;color:#7A4D05;}
 .banner-title{font-weight:700;margin-bottom:2px;}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
 .stat{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;}
 .stat-lbl{font-size:11px;color:var(--ink3);margin-bottom:4px;font-family:'DM Mono',monospace;}
 .stat-val{font-size:22px;font-weight:700;}
 .add-form{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:24px;}
 .form-title{font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:12px;letter-spacing:0.5px;text-transform:uppercase;}
-.form-row{display:flex;gap:8px;flex-wrap:wrap;}
+.form-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
 .form-row input,.form-row select{flex:1;min-width:90px;font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);outline:none;}
 .form-row input:focus,.form-row select:focus{border-color:var(--ink);}
 .form-row input[type=text]{min-width:160px;}
@@ -45,9 +45,25 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .submit-btn:hover{opacity:0.75;}
 .submit-btn:disabled{opacity:0.4;cursor:default;}
 .save-status{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;text-align:right;margin-top:8px;min-height:16px;}
+/* 照片上傳區 */
+.photo-area{margin-top:4px;}
+.photo-label{font-size:12px;color:var(--ink2);margin-bottom:6px;}
+.photo-input-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.photo-input{font-size:12px;color:var(--ink2);}
+.photo-preview{width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid var(--border);}
+.photo-preview-wrap{position:relative;display:inline-block;}
+.photo-remove{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+/* 正常/異常選擇 */
+.stool-quality{display:none;gap:8px;margin-top:6px;}
+.stool-quality.show{display:flex;}
+.sq-btn{flex:1;padding:6px;border:1px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--ink2);transition:all 0.15s;}
+.sq-btn.selected-normal{background:var(--green-light);border-color:#B2D9C3;color:#1A5233;font-weight:500;}
+.sq-btn.selected-abnormal{background:var(--red-light);border-color:#EFBBB8;color:#7B1F1A;font-weight:500;}
+/* Filter */
 .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
 .fbtn{font-size:12px;padding:4px 12px;border-radius:99px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--ink2);font-family:'Noto Sans TC',sans-serif;transition:all 0.15s;}
 .fbtn.on{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+/* Timeline */
 .day-block{margin-bottom:28px;}
 .day-hdr{font-size:11px;font-weight:700;color:var(--ink3);letter-spacing:1.5px;font-family:'DM Mono',monospace;margin-bottom:10px;padding-left:32px;}
 .ev-row{display:flex;gap:10px;align-items:flex-start;padding:4px 0;}
@@ -60,12 +76,19 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .ev-card.u-purple{background:var(--purple-light);border-color:#C9BCEF;}
 .ev-card.u-amber{background:var(--amber-light);border-color:#F0D89A;}
 .ev-time{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;margin-bottom:3px;}
-.ev-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.ev-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;}
 .ev-tag{font-size:11px;padding:2px 8px;border-radius:99px;font-weight:500;white-space:nowrap;}
 .ev-note{font-size:12px;color:var(--ink2);}
+.ev-photo{margin-top:6px;}
+.ev-photo img{max-width:100%;max-height:200px;border-radius:6px;border:1px solid var(--border);cursor:pointer;object-fit:cover;}
 .del-btn{background:none;border:none;cursor:pointer;color:var(--ink3);font-size:12px;padding:2px 6px;border-radius:4px;flex-shrink:0;}
 .del-btn:hover{color:var(--red);}
 .loading{text-align:center;padding:40px;color:var(--ink3);font-size:13px;}
+/* Lightbox */
+.lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;}
+.lightbox.show{display:flex;}
+.lightbox img{max-width:90%;max-height:90%;border-radius:8px;}
+.lightbox-close{position:absolute;top:20px;right:24px;color:#fff;font-size:28px;cursor:pointer;background:none;border:none;}
 @media(max-width:560px){
   .stats{grid-template-columns:repeat(2,1fr);}
   .site-header-inner{flex-direction:column;align-items:flex-start;}
@@ -87,16 +110,16 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
   <div id="banner-area"></div>
   <div class="stats" id="stats-area">
     <div class="stat"><div class="stat-lbl">今日正常排尿</div><div class="stat-val" style="color:var(--blue)">—</div></div>
+    <div class="stat"><div class="stat-lbl">今日正常排便</div><div class="stat-val" style="color:var(--green)">—</div></div>
     <div class="stat"><div class="stat-lbl">今日異常事件</div><div class="stat-val" style="color:var(--red)">—</div></div>
-    <div class="stat"><div class="stat-lbl">今日喝水次數</div><div class="stat-val" style="color:var(--green)">—</div></div>
-    <div class="stat"><div class="stat-lbl">最後正常排尿</div><div class="stat-val" style="font-size:15px;color:var(--blue)">—</div></div>
   </div>
+
   <div class="add-form">
     <div class="form-title">新增記錄</div>
     <div class="form-row">
       <input type="date" id="f-date" style="max-width:145px"/>
       <input type="time" id="f-time" style="max-width:95px"/>
-      <select id="f-type" style="max-width:150px">
+      <select id="f-type" style="max-width:150px" onchange="onTypeChange()">
         <option value="urine">排尿</option>
         <option value="stool">排便</option>
         <option value="drink">喝水</option>
@@ -109,8 +132,24 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
       <input type="text" id="f-note" placeholder="備註（可選）"/>
       <button class="submit-btn" id="submit-btn" onclick="addEvent()">新增</button>
     </div>
+
+    <!-- 排便正常/異常 -->
+    <div class="stool-quality" id="stool-quality">
+      <button class="sq-btn" id="sq-normal" onclick="selectStoolQuality('normal')">✓ 正常便便</button>
+      <button class="sq-btn" id="sq-abnormal" onclick="selectStoolQuality('abnormal')">✕ 異常（羊便便／稀）</button>
+    </div>
+
+    <!-- 照片上傳 -->
+    <div class="photo-area">
+      <div class="photo-input-row">
+        <input type="file" id="f-photo" accept="image/*" onchange="onPhotoSelected()" class="photo-input"/>
+        <div id="photo-preview-area"></div>
+      </div>
+    </div>
+
     <div class="save-status" id="save-status"></div>
   </div>
+
   <div class="filter-bar">
     <button class="fbtn on" onclick="setFilter('all',this)">全部</button>
     <button class="fbtn" onclick="setFilter('urine',this)">排尿</button>
@@ -123,9 +162,15 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
   <div id="timeline-area"><div class="loading">連線資料庫中…</div></div>
 </div>
 
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt=""/>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBttv17Va1SV4i0mu-osawa8m-aw_iK-vA",
@@ -133,8 +178,7 @@ const firebaseConfig = {
   projectId: "sandy-health",
   storageBucket: "sandy-health.firebasestorage.app",
   messagingSenderId: "640714223664",
-  appId: "1:640714223664:web:7ed758ae7519e73180bdf5",
-  measurementId: "G-6V298TBQ8K"
+  appId: "1:640714223664:web:7ed758ae7519e73180bdf5"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -153,6 +197,8 @@ const TM={
 
 let events=[];
 let activeFilter='all';
+let stoolQuality=null;
+let photoBase64=null;
 
 function pad(n){return String(n).padStart(2,'0');}
 function todayStr(){const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
@@ -162,7 +208,48 @@ document.getElementById('f-date').value=todayStr();
 document.getElementById('f-time').value=nowT();
 setInterval(()=>{document.getElementById('f-time').value=nowT();},30000);
 
-// 即時監聽 Firestore
+window.onTypeChange = function(){
+  const t=document.getElementById('f-type').value;
+  const sq=document.getElementById('stool-quality');
+  if(t==='stool'){sq.classList.add('show');}
+  else{sq.classList.remove('show');stoolQuality=null;document.getElementById('sq-normal').className='sq-btn';document.getElementById('sq-abnormal').className='sq-btn';}
+}
+
+window.selectStoolQuality = function(q){
+  stoolQuality=q;
+  document.getElementById('sq-normal').className='sq-btn'+(q==='normal'?' selected-normal':'');
+  document.getElementById('sq-abnormal').className='sq-btn'+(q==='abnormal'?' selected-abnormal':'');
+}
+
+window.onPhotoSelected = function(){
+  const file=document.getElementById('f-photo').files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    photoBase64=e.target.result;
+    document.getElementById('photo-preview-area').innerHTML=`
+      <div class="photo-preview-wrap">
+        <img src="${photoBase64}" class="photo-preview"/>
+        <button class="photo-remove" onclick="removePhoto()">✕</button>
+      </div>`;
+  };
+  reader.readAsDataURL(file);
+}
+
+window.removePhoto = function(){
+  photoBase64=null;
+  document.getElementById('f-photo').value='';
+  document.getElementById('photo-preview-area').innerHTML='';
+}
+
+window.openLightbox = function(src){
+  document.getElementById('lightbox-img').src=src;
+  document.getElementById('lightbox').classList.add('show');
+}
+window.closeLightbox = function(){
+  document.getElementById('lightbox').classList.remove('show');
+}
+
 const q = query(collection(db, "events"), orderBy("datetime", "desc"));
 onSnapshot(q, (snapshot) => {
   events = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
@@ -172,7 +259,7 @@ onSnapshot(q, (snapshot) => {
   render();
 });
 
-window.addEvent = async function() {
+window.addEvent = async function(){
   const date=document.getElementById('f-date').value;
   const time=document.getElementById('f-time').value;
   const type=document.getElementById('f-type').value;
@@ -180,32 +267,48 @@ window.addEvent = async function() {
   if(!date||!time) return;
   const btn=document.getElementById('submit-btn');
   btn.disabled=true; btn.textContent='儲存中…';
-  const isGood=type==='drink'||type==='eat'||(type==='urine'&&!note.includes('無尿'));
-  const isMed=type==='medical';
-  const isDoc=note.includes('醫師') && type==='medical';
-  try {
-    await addDoc(collection(db,"events"), {
-      date, time, type, note,
-      urgent: type==='alert'||type==='vomit',
-      good: isGood, med: isMed, doc: isDoc,
-      datetime: date+'T'+time
+
+  const isGood = type==='drink'||type==='eat'||
+    (type==='urine'&&!note.includes('無尿'))||
+    (type==='stool'&&stoolQuality==='normal');
+  const isUrgent = type==='alert'||type==='vomit'||
+    (type==='stool'&&stoolQuality==='abnormal');
+
+  try{
+    await addDoc(collection(db,"events"),{
+      date,time,type,note,
+      urgent:isUrgent,
+      good:isGood,
+      med:type==='medical',
+      doc:type==='medical'&&note.includes('醫師'),
+      stoolQuality: type==='stool'?(stoolQuality||null):null,
+      photo: photoBase64||null,
+      datetime:date+'T'+time
     });
     document.getElementById('f-note').value='';
     document.getElementById('f-time').value=nowT();
+    stoolQuality=null;
+    photoBase64=null;
+    document.getElementById('f-photo').value='';
+    document.getElementById('photo-preview-area').innerHTML='';
+    document.getElementById('sq-normal').className='sq-btn';
+    document.getElementById('sq-abnormal').className='sq-btn';
+    document.getElementById('stool-quality').classList.remove('show');
+    document.getElementById('f-type').value='urine';
     document.getElementById('save-status').textContent='✓ 已同步至雲端';
     setTimeout(()=>{document.getElementById('save-status').textContent='';},2000);
-  } catch(e) {
+  }catch(e){
     document.getElementById('save-status').textContent='儲存失敗：'+e.message;
   }
   btn.disabled=false; btn.textContent='新增';
 }
 
-window.deleteEvent = async function(id) {
+window.deleteEvent = async function(id){
   if(!confirm('確定刪除這筆記錄？')) return;
   await deleteDoc(doc(db,"events",id));
 }
 
-window.setFilter = function(f,btn) {
+window.setFilter = function(f,btn){
   activeFilter=f;
   document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
@@ -221,9 +324,9 @@ function renderBanner(){
   let html='';
   if(sinceH>4){
     html=`<div class="banner red"><div class="banner-title">警示</div>距離最後一次正常排尿已超過 ${Math.floor(sinceH)} 小時，請立即聯絡沈醫師。</div>`;
-  } else if(alertN>0){
+  }else if(alertN>0){
     html=`<div class="banner amber"><div class="banner-title">今日有異常記錄</div>持續觀察頻尿、蹲下無尿、廁所外漏尿等狀況。如症狀持續請聯絡恩亞動物醫院。</div>`;
-  } else {
+  }else{
     html=`<div class="banner green"><div class="banner-title">目前狀況穩定</div>今日尚無異常事件記錄，持續觀察中。</div>`;
   }
   document.getElementById('banner-area').innerHTML=html;
@@ -232,16 +335,12 @@ function renderBanner(){
 function renderStats(){
   const te=events.filter(e=>e.date===todayStr());
   const urineOk=te.filter(e=>e.type==='urine'&&e.good).length;
+  const stoolOk=te.filter(e=>e.type==='stool'&&e.stoolQuality==='normal').length;
   const alertN=te.filter(e=>e.urgent).length;
-  const drinkN=te.filter(e=>e.type==='drink').length;
-  const lastU=events.filter(e=>e.type==='urine'&&e.good).sort((a,b)=>a.datetime<b.datetime?1:-1)[0];
-  let since='—';
-  if(lastU){const h=Math.floor((Date.now()-new Date(lastU.datetime))/3600000);since=h<1?'剛剛':h<24?`${h}h 前`:`${Math.floor(h/24)}d 前`;}
   document.getElementById('stats-area').innerHTML=`
     <div class="stat"><div class="stat-lbl">今日正常排尿</div><div class="stat-val" style="color:var(--blue)">${urineOk}</div></div>
-    <div class="stat"><div class="stat-lbl">今日異常事件</div><div class="stat-val" style="color:${alertN>0?'var(--red)':'var(--green)'}">${alertN}</div></div>
-    <div class="stat"><div class="stat-lbl">今日喝水次數</div><div class="stat-val" style="color:var(--green)">${drinkN}</div></div>
-    <div class="stat"><div class="stat-lbl">最後正常排尿</div><div class="stat-val" style="font-size:15px;color:var(--blue)">${since}</div></div>`;
+    <div class="stat"><div class="stat-lbl">今日正常排便</div><div class="stat-val" style="color:var(--green)">${stoolOk}</div></div>
+    <div class="stat"><div class="stat-lbl">今日異常事件</div><div class="stat-val" style="color:${alertN>0?'var(--red)':'var(--green)'}">${alertN}</div></div>`;
 }
 
 function renderTimeline(){
@@ -266,6 +365,19 @@ function renderTimeline(){
       else if(e.good) cls='ev-card u-green';
       else if(e.med) cls='ev-card u-purple';
       else if(e.doc) cls='ev-card u-amber';
+
+      let qualityBadge='';
+      if(e.type==='stool'&&e.stoolQuality){
+        qualityBadge=e.stoolQuality==='normal'
+          ?`<span style="font-size:11px;padding:2px 7px;border-radius:99px;background:#D6EDD9;color:#2A5C1A;font-weight:500;">正常</span>`
+          :`<span style="font-size:11px;padding:2px 7px;border-radius:99px;background:#FDECEA;color:#7B1F1A;font-weight:500;">異常</span>`;
+      }
+
+      let photoHtml='';
+      if(e.photo){
+        photoHtml=`<div class="ev-photo"><img src="${e.photo}" onclick="openLightbox('${e.photo}')" title="點擊放大"/></div>`;
+      }
+
       html+=`<div class="ev-row">
         <div class="ev-dot-col">
           <div class="ev-dot" style="background:${m.dot}"></div>
@@ -276,8 +388,10 @@ function renderTimeline(){
             <div class="ev-time">${e.time}</div>
             <div class="ev-meta">
               <span class="ev-tag" style="background:${m.bg};color:${m.color}">${m.label}</span>
+              ${qualityBadge}
               <span class="ev-note">${e.note||''}</span>
             </div>
+            ${photoHtml}
           </div>
           <button class="del-btn" onclick="deleteEvent('${e.id}')" title="刪除">✕</button>
         </div>
