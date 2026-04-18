@@ -13,7 +13,7 @@
   --amber:#D4890A;--amber-light:#FDF3DC;
   --red:#C0392B;--red-light:#FDECEA;
   --green:#2A7D4F;--green-light:#E8F5EE;
-  --blue:#1A5FA8;--blue-light:#E8F0FB;
+  --blue:#1A5FA8;
   --purple:#5B3FA6;--purple-light:#EEE9FC;
   --border:#E8E4DC;--radius:10px;
 }
@@ -28,7 +28,7 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .main{max-width:760px;margin:0 auto;padding:20px 24px 60px;}
 .banner{border-radius:var(--radius);padding:12px 16px;font-size:13px;line-height:1.7;margin-bottom:16px;border:1px solid transparent;}
 .banner.red{background:var(--red-light);border-color:#EFBBB8;color:#7B1F1A;}
-.banner.green{background:var(--green-light);border-color:#B2D9C3;color:#1A5233;}
+.banner.green{background:#E8F5EE;border-color:#B2D9C3;color:#1A5233;}
 .banner.amber{background:var(--amber-light);border-color:#F0D89A;color:#7A4D05;}
 .banner-title{font-weight:700;margin-bottom:2px;}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
@@ -41,23 +41,21 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .form-row input,.form-row select{flex:1;min-width:90px;font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);outline:none;}
 .form-row input:focus,.form-row select:focus{border-color:var(--ink);}
 .form-row input[type=text]{min-width:160px;}
-.submit-btn{background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;white-space:nowrap;font-weight:500;transition:opacity 0.15s;}
+.submit-btn{background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;white-space:nowrap;font-weight:500;}
 .submit-btn:hover{opacity:0.75;}
 .submit-btn:disabled{opacity:0.4;cursor:default;}
 .save-status{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;text-align:right;margin-top:8px;min-height:16px;}
-.photo-area{margin-top:4px;}
-.photo-input-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.photo-input{font-size:12px;color:var(--ink2);}
+.photo-input-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px;}
 .photo-preview{width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid var(--border);}
 .photo-preview-wrap{position:relative;display:inline-block;}
-.photo-remove{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.photo-remove-new{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;}
 .stool-quality{display:none;gap:8px;margin-top:6px;}
 .stool-quality.show{display:flex;}
-.sq-btn{flex:1;padding:6px;border:1px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--ink2);transition:all 0.15s;}
-.sq-btn.selected-normal{background:var(--green-light);border-color:#B2D9C3;color:#1A5233;font-weight:500;}
+.sq-btn{flex:1;padding:6px;border:1px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--ink2);}
+.sq-btn.selected-normal{background:#E8F5EE;border-color:#B2D9C3;color:#1A5233;font-weight:500;}
 .sq-btn.selected-abnormal{background:var(--red-light);border-color:#EFBBB8;color:#7B1F1A;font-weight:500;}
 .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
-.fbtn{font-size:12px;padding:4px 12px;border-radius:99px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--ink2);font-family:'Noto Sans TC',sans-serif;transition:all 0.15s;}
+.fbtn{font-size:12px;padding:4px 12px;border-radius:99px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--ink2);font-family:'Noto Sans TC',sans-serif;}
 .fbtn.on{background:var(--ink);color:var(--cream);border-color:var(--ink);}
 .day-block{margin-bottom:28px;}
 .day-hdr{font-size:11px;font-weight:700;color:var(--ink3);letter-spacing:1.5px;font-family:'DM Mono',monospace;margin-bottom:10px;padding-left:32px;}
@@ -67,25 +65,35 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .ev-line{width:1px;flex:1;background:var(--border);min-height:20px;}
 .ev-card{flex:1;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;}
 .ev-card.u-red{background:var(--red-light);border-color:#EFBBB8;}
-.ev-card.u-green{background:var(--green-light);border-color:#B2D9C3;}
+.ev-card.u-green{background:#E8F5EE;border-color:#B2D9C3;}
 .ev-card.u-purple{background:var(--purple-light);border-color:#C9BCEF;}
 .ev-card.u-amber{background:var(--amber-light);border-color:#F0D89A;}
 .ev-card-top{display:flex;justify-content:space-between;align-items:flex-start;}
-.ev-card-actions{display:flex;gap:4px;flex-shrink:0;}
+.ev-card-actions{display:flex;gap:4px;flex-shrink:0;margin-left:6px;}
 .ev-time{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;margin-bottom:3px;}
 .ev-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;}
 .ev-tag{font-size:11px;padding:2px 8px;border-radius:99px;font-weight:500;white-space:nowrap;}
 .ev-note{font-size:12px;color:var(--ink2);}
-.ev-photo{margin-top:6px;}
-.ev-photo img{max-width:100%;max-height:200px;border-radius:6px;border:1px solid var(--border);cursor:pointer;object-fit:cover;}
-.del-btn{background:none;border:none;cursor:pointer;color:var(--ink3);font-size:12px;padding:2px 6px;border-radius:4px;}
-.del-btn:hover{color:var(--red);}
-.add-photo-btn{background:none;border:1px solid var(--border);cursor:pointer;color:var(--ink3);font-size:11px;padding:2px 7px;border-radius:4px;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;}
-.add-photo-btn:hover{border-color:var(--ink);color:var(--ink);}
-.inline-photo-input{margin-top:6px;display:none;}
-.inline-photo-input.show{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
-.inline-photo-input input{font-size:12px;}
-.inline-save-btn{font-size:11px;padding:3px 10px;border:none;border-radius:6px;background:var(--ink);color:var(--cream);cursor:pointer;font-family:'Noto Sans TC',sans-serif;}
+.ev-photo{margin-top:6px;position:relative;display:inline-block;}
+.ev-photo img{max-width:100%;max-height:200px;border-radius:6px;border:1px solid var(--border);cursor:pointer;object-fit:cover;display:block;}
+.ev-photo-del{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:4px;font-size:11px;padding:2px 6px;cursor:pointer;}
+.action-btn{background:none;border:1px solid var(--border);cursor:pointer;color:var(--ink3);font-size:11px;padding:2px 7px;border-radius:4px;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;}
+.action-btn:hover{border-color:var(--ink);color:var(--ink);}
+.action-btn.danger:hover{border-color:var(--red);color:var(--red);}
+/* 編輯面板 */
+.edit-panel{display:none;margin-top:8px;padding:10px;background:rgba(0,0,0,0.03);border-radius:8px;border:1px solid var(--border);}
+.edit-panel.show{display:block;}
+.edit-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;}
+.edit-row input{flex:1;min-width:80px;font-family:'Noto Sans TC',sans-serif;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--ink);outline:none;}
+.edit-row input:focus{border-color:var(--ink);}
+.edit-save-btn{background:var(--ink);color:var(--cream);border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;}
+.edit-save-btn:disabled{opacity:0.4;}
+/* 補照片面板 */
+.photo-panel{display:none;margin-top:8px;padding:10px;background:rgba(0,0,0,0.03);border-radius:8px;border:1px solid var(--border);}
+.photo-panel.show{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.photo-panel input[type=file]{font-size:12px;}
+.photo-save-btn{background:var(--ink);color:var(--cream);border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;}
+.photo-save-btn:disabled{opacity:0.4;}
 .loading{text-align:center;padding:40px;color:var(--ink3);font-size:13px;}
 .lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;}
 .lightbox.show{display:flex;}
@@ -138,11 +146,9 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
       <button class="sq-btn" id="sq-normal" onclick="selectStoolQuality('normal')">✓ 正常便便</button>
       <button class="sq-btn" id="sq-abnormal" onclick="selectStoolQuality('abnormal')">✕ 異常（羊便便／稀）</button>
     </div>
-    <div class="photo-area">
-      <div class="photo-input-row">
-        <input type="file" id="f-photo" accept="image/*" onchange="onPhotoSelected()" class="photo-input"/>
-        <div id="photo-preview-area"></div>
-      </div>
+    <div class="photo-input-row">
+      <input type="file" id="f-photo" accept="image/*" onchange="onPhotoSelected()"/>
+      <div id="photo-preview-area"></div>
     </div>
     <div class="save-status" id="save-status"></div>
   </div>
@@ -204,10 +210,28 @@ document.getElementById('f-date').value=todayStr();
 document.getElementById('f-time').value=nowT();
 setInterval(()=>{document.getElementById('f-time').value=nowT();},30000);
 
+function compressAndRead(file,cb){
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const canvas=document.createElement('canvas');
+      const max=800;let w=img.width,h=img.height;
+      if(w>max){h=h*max/w;w=max;}
+      if(h>max){w=w*max/h;h=max;}
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      cb(canvas.toDataURL('image/jpeg',0.75));
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
 window.onTypeChange=function(){
   const t=document.getElementById('f-type').value;
   const sq=document.getElementById('stool-quality');
-  if(t==='stool'){sq.classList.add('show');}
+  if(t==='stool') sq.classList.add('show');
   else{sq.classList.remove('show');stoolQuality=null;document.getElementById('sq-normal').className='sq-btn';document.getElementById('sq-abnormal').className='sq-btn';}
 }
 
@@ -220,12 +244,12 @@ window.selectStoolQuality=function(q){
 window.onPhotoSelected=function(){
   const file=document.getElementById('f-photo').files[0];
   if(!file) return;
-  compressAndRead(file, b64=>{
+  compressAndRead(file,b64=>{
     photoBase64=b64;
     document.getElementById('photo-preview-area').innerHTML=`
       <div class="photo-preview-wrap">
         <img src="${b64}" class="photo-preview"/>
-        <button class="photo-remove" onclick="removePhoto()">✕</button>
+        <button class="photo-remove-new" onclick="removePhoto()">✕</button>
       </div>`;
   });
 }
@@ -236,66 +260,69 @@ window.removePhoto=function(){
   document.getElementById('photo-preview-area').innerHTML='';
 }
 
-function compressAndRead(file, cb){
-  const reader=new FileReader();
-  reader.onload=function(e){
-    const img=new Image();
-    img.onload=function(){
-      const canvas=document.createElement('canvas');
-      const max=800;
-      let w=img.width,h=img.height;
-      if(w>max){h=h*max/w;w=max;}
-      if(h>max){w=w*max/h;h=max;}
-      canvas.width=w;canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      cb(canvas.toDataURL('image/jpeg',0.75));
-    };
-    img.src=e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
 window.openLightbox=function(src){
   document.getElementById('lightbox-img').src=src;
   document.getElementById('lightbox').classList.add('show');
 }
-window.closeLightbox=function(){
-  document.getElementById('lightbox').classList.remove('show');
+window.closeLightbox=function(){document.getElementById('lightbox').classList.remove('show');}
+
+// 切換編輯面板
+window.toggleEdit=function(sid){
+  const p=document.getElementById('edit-panel-'+sid);
+  p.classList.toggle('show');
 }
 
-window.toggleInlinePhoto=function(id){
-  const area=document.getElementById('inline-photo-'+id);
-  area.classList.toggle('show');
-}
-
-window.onInlinePhotoSelected=function(id){
-  const input=document.getElementById('inline-file-'+id);
-  const file=input.files[0];
-  if(!file) return;
-  compressAndRead(file, b64=>{
-    const preview=document.getElementById('inline-preview-'+id);
-    if(preview) preview.src=b64;
-    input.dataset.b64=b64;
-  });
-}
-
-window.saveInlinePhoto=async function(id){
-  const input=document.getElementById('inline-file-'+id);
-  const b64=input.dataset.b64;
-  if(!b64){alert('請先選擇照片');return;}
-  const btn=document.getElementById('inline-save-btn-'+id);
+// 儲存編輯
+window.saveEdit=async function(docId,sid){
+  const time=document.getElementById('edit-time-'+sid).value;
+  const note=document.getElementById('edit-note-'+sid).value;
+  const date=document.getElementById('edit-date-'+sid).value;
+  if(!time||!date) return;
+  const btn=document.getElementById('edit-save-'+sid);
   btn.disabled=true;btn.textContent='儲存中…';
   try{
-    await updateDoc(doc(db,'events',id),{photo:b64});
-    btn.textContent='已儲存';
-  }catch(e){
-    btn.textContent='失敗';
-    alert('儲存失敗：'+e.message);
-  }
+    await updateDoc(doc(db,'events',docId),{time,note,date,datetime:date+'T'+time});
+    document.getElementById('edit-panel-'+sid).classList.remove('show');
+  }catch(e){alert('儲存失敗：'+e.message);}
+  btn.disabled=false;btn.textContent='儲存';
+}
+
+// 切換補照片面板
+window.togglePhoto=function(sid){
+  const p=document.getElementById('photo-panel-'+sid);
+  p.classList.toggle('show');
+}
+
+// 補照片選擇
+window.onPanelPhotoSelected=function(sid){
+  const input=document.getElementById('panel-file-'+sid);
+  const file=input.files[0];
+  if(!file) return;
+  compressAndRead(file,b64=>{input.dataset.b64=b64;});
+}
+
+// 儲存補照片
+window.savePanelPhoto=async function(docId,sid){
+  const input=document.getElementById('panel-file-'+sid);
+  const b64=input.dataset.b64;
+  if(!b64){alert('請先選擇照片');return;}
+  const btn=document.getElementById('photo-save-'+sid);
+  btn.disabled=true;btn.textContent='儲存中…';
+  try{
+    await updateDoc(doc(db,'events',docId),{photo:b64});
+    document.getElementById('photo-panel-'+sid).classList.remove('show');
+  }catch(e){alert('儲存失敗：'+e.message);}
+  btn.disabled=false;btn.textContent='儲存照片';
+}
+
+// 刪除照片
+window.deletePhoto=async function(docId){
+  if(!confirm('確定刪除這張照片？記錄本身會保留。')) return;
+  await updateDoc(doc(db,'events',docId),{photo:null});
 }
 
 const q=query(collection(db,"events"),orderBy("datetime","desc"));
-onSnapshot(q,(snapshot)=>{
+onSnapshot(q,snapshot=>{
   events=snapshot.docs.map(d=>({id:d.id,...d.data()}));
   document.getElementById('sync-dot').className='sync-dot live';
   const now=new Date();
@@ -362,13 +389,9 @@ function renderBanner(){
   let sinceH=999;
   if(lastU) sinceH=(Date.now()-new Date(lastU.datetime))/3600000;
   let html='';
-  if(sinceH>4){
-    html=`<div class="banner red"><div class="banner-title">警示</div>距離最後一次正常排尿已超過 ${Math.floor(sinceH)} 小時，請立即聯絡沈醫師。</div>`;
-  }else if(alertN>0){
-    html=`<div class="banner amber"><div class="banner-title">今日有異常記錄</div>持續觀察頻尿、蹲下無尿、廁所外漏尿等狀況。如症狀持續請聯絡恩亞動物醫院。</div>`;
-  }else{
-    html=`<div class="banner green"><div class="banner-title">目前狀況穩定</div>今日尚無異常事件記錄，持續觀察中。</div>`;
-  }
+  if(sinceH>4) html=`<div class="banner red"><div class="banner-title">警示</div>距離最後一次正常排尿已超過 ${Math.floor(sinceH)} 小時，請立即聯絡沈醫師。</div>`;
+  else if(alertN>0) html=`<div class="banner amber"><div class="banner-title">今日有異常記錄</div>持續觀察頻尿、蹲下無尿、廁所外漏尿等狀況。如症狀持續請聯絡恩亞動物醫院。</div>`;
+  else html=`<div class="banner green"><div class="banner-title">目前狀況穩定</div>今日尚無異常事件記錄，持續觀察中。</div>`;
   document.getElementById('banner-area').innerHTML=html;
 }
 
@@ -406,6 +429,8 @@ function renderTimeline(){
       else if(e.med) cls='ev-card u-purple';
       else if(e.doc) cls='ev-card u-amber';
 
+      const sid=e.id.replace(/[^a-zA-Z0-9]/g,'_');
+
       let qualityBadge='';
       if(e.type==='stool'&&e.stoolQuality){
         qualityBadge=e.stoolQuality==='normal'
@@ -415,10 +440,11 @@ function renderTimeline(){
 
       let photoHtml='';
       if(e.photo){
-        photoHtml=`<div class="ev-photo"><img src="${e.photo}" onclick="openLightbox('${e.photo}')" title="點擊放大"/></div>`;
+        photoHtml=`<div class="ev-photo">
+          <img src="${e.photo}" onclick="openLightbox('${e.photo}')" title="點擊放大"/>
+          <button class="ev-photo-del" onclick="deletePhoto('${e.id}')">刪除照片</button>
+        </div>`;
       }
-
-      const safeId=e.id.replace(/[^a-zA-Z0-9]/g,'_');
 
       html+=`<div class="ev-row">
         <div class="ev-dot-col">
@@ -436,15 +462,23 @@ function renderTimeline(){
               </div>
             </div>
             <div class="ev-card-actions">
-              <button class="add-photo-btn" onclick="toggleInlinePhoto('${safeId}')">${e.photo?'換照片':'補照片'}</button>
-              <button class="del-btn" onclick="deleteEvent('${e.id}')" title="刪除">✕</button>
+              <button class="action-btn" onclick="toggleEdit('${sid}')">編輯</button>
+              <button class="action-btn" onclick="togglePhoto('${sid}')">${e.photo?'換照片':'補照片'}</button>
+              <button class="action-btn danger" onclick="deleteEvent('${e.id}')">刪除</button>
             </div>
           </div>
           ${photoHtml}
-          <div class="inline-photo-input" id="inline-photo-${safeId}">
-            <input type="file" id="inline-file-${safeId}" accept="image/*" onchange="onInlinePhotoSelected('${safeId}')"/>
-            <img id="inline-preview-${safeId}" src="" style="width:50px;height:50px;object-fit:cover;border-radius:4px;display:none;"/>
-            <button class="inline-save-btn" id="inline-save-btn-${safeId}" onclick="saveInlinePhoto('${e.id}')">儲存照片</button>
+          <div class="edit-panel" id="edit-panel-${sid}">
+            <div class="edit-row">
+              <input type="date" id="edit-date-${sid}" value="${e.date}" style="max-width:130px"/>
+              <input type="time" id="edit-time-${sid}" value="${e.time}" style="max-width:95px"/>
+              <input type="text" id="edit-note-${sid}" value="${(e.note||'').replace(/"/g,'&quot;')}" placeholder="備註"/>
+              <button class="edit-save-btn" id="edit-save-${sid}" onclick="saveEdit('${e.id}','${sid}')">儲存</button>
+            </div>
+          </div>
+          <div class="photo-panel" id="photo-panel-${sid}">
+            <input type="file" id="panel-file-${sid}" accept="image/*" onchange="onPanelPhotoSelected('${sid}')"/>
+            <button class="photo-save-btn" id="photo-save-${sid}" onclick="savePanelPhoto('${e.id}','${sid}')">儲存照片</button>
           </div>
         </div>
       </div>`;
@@ -452,15 +486,6 @@ function renderTimeline(){
     html+='</div>';
   });
   container.innerHTML=html;
-
-  // 顯示 inline preview 當選了檔案
-  document.querySelectorAll('[id^=inline-file-]').forEach(input=>{
-    input.addEventListener('change',function(){
-      const sid=this.id.replace('inline-file-','');
-      const preview=document.getElementById('inline-preview-'+sid);
-      if(preview) preview.style.display=this.files.length?'block':'none';
-    });
-  });
 }
 
 function render(){renderBanner();renderStats();renderTimeline();}
