@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>珊迪 Sandy — 健康監測記錄</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#FAF8F3;--ink:#1C1A16;--ink2:#5A5750;--ink3:#9A9590;
+  --amber:#D4890A;--amber-light:#FDF3DC;
+  --red:#C0392B;--red-light:#FDECEA;
+  --green:#2A7D4F;--green-light:#E8F5EE;
+  --blue:#1A5FA8;
+  --purple:#5B3FA6;--purple-light:#EEE9FC;
+  --border:#E8E4DC;--radius:10px;
+}
+body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-serif;font-size:14px;line-height:1.6;min-height:100vh;}
+.site-header{border-bottom:1px solid var(--border);padding:20px 24px 16px;position:sticky;top:0;background:var(--cream);z-index:100;}
+.site-header-inner{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.cat-name{font-size:22px;font-weight:700;letter-spacing:-0.5px;display:flex;align-items:center;gap:8px;}
+.cat-badge{background:var(--ink);color:var(--cream);font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px;letter-spacing:1px;font-family:'DM Mono',monospace;}
+.header-meta{font-size:12px;color:var(--ink3);font-family:'DM Mono',monospace;}
+.sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#aaa;margin-right:5px;vertical-align:middle;}
+.sync-dot.live{background:#2A7D4F;}
+.main{max-width:760px;margin:0 auto;padding:20px 24px 60px;}
+.banner{border-radius:var(--radius);padding:12px 16px;font-size:13px;line-height:1.7;margin-bottom:16px;border:1px solid transparent;}
+.banner.red{background:var(--red-light);border-color:#EFBBB8;color:#7B1F1A;}
+.banner.green{background:#E8F5EE;border-color:#B2D9C3;color:#1A5233;}
+.banner.amber{background:var(--amber-light);border-color:#F0D89A;color:#7A4D05;}
+.banner-title{font-weight:700;margin-bottom:2px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.stat{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;}
+.stat-lbl{font-size:11px;color:var(--ink3);margin-bottom:4px;font-family:'DM Mono',monospace;}
+.stat-val{font-size:22px;font-weight:700;}
+.add-form{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:24px;}
+.form-title{font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:12px;letter-spacing:0.5px;text-transform:uppercase;}
+.form-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.form-row input,.form-row select{flex:1;min-width:90px;font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);outline:none;}
+.form-row input:focus,.form-row select:focus{border-color:var(--ink);}
+.form-row input[type=text]{min-width:160px;}
+.submit-btn{background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;white-space:nowrap;font-weight:500;}
+.submit-btn:hover{opacity:0.75;}
+.submit-btn:disabled{opacity:0.4;cursor:default;}
+.save-status{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;text-align:right;margin-top:8px;min-height:16px;}
+.photo-input-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px;}
+.photo-preview{width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid var(--border);}
+.photo-preview-wrap{position:relative;display:inline-block;}
+.photo-remove-new{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;}
+.stool-quality{display:none;gap:8px;margin-top:6px;}
+.stool-quality.show{display:flex;}
+.sq-btn{flex:1;padding:6px;border:1px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--ink2);}
+.sq-btn.selected-normal{background:#E8F5EE;border-color:#B2D9C3;color:#1A5233;font-weight:500;}
+.sq-btn.selected-abnormal{background:var(--red-light);border-color:#EFBBB8;color:#7B1F1A;font-weight:500;}
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.fbtn{font-size:12px;padding:4px 12px;border-radius:99px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--ink2);font-family:'Noto Sans TC',sans-serif;}
+.fbtn.on{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+.day-block{margin-bottom:28px;}
+.day-hdr{font-size:11px;font-weight:700;color:var(--ink3);letter-spacing:1.5px;font-family:'DM Mono',monospace;margin-bottom:10px;padding-left:32px;}
+.ev-row{display:flex;gap:10px;align-items:flex-start;padding:4px 0;}
+.ev-dot-col{display:flex;flex-direction:column;align-items:center;width:22px;flex-shrink:0;}
+.ev-dot{width:10px;height:10px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.ev-line{width:1px;flex:1;background:var(--border);min-height:20px;}
+.ev-card{flex:1;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;}
+.ev-card.u-red{background:var(--red-light);border-color:#EFBBB8;}
+.ev-card.u-green{background:#E8F5EE;border-color:#B2D9C3;}
+.ev-card.u-purple{background:var(--purple-light);border-color:#C9BCEF;}
+.ev-card.u-amber{background:var(--amber-light);border-color:#F0D89A;}
+.ev-card-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.ev-card-actions{display:flex;gap:4px;flex-shrink:0;margin-left:6px;}
+.ev-time{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;margin-bottom:3px;}
+.ev-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;}
+.ev-tag{font-size:11px;padding:2px 8px;border-radius:99px;font-weight:500;white-space:nowrap;}
+.ev-note{font-size:12px;color:var(--ink2);}
+.ev-photo{margin-top:6px;position:relative;display:inline-block;}
+.ev-photo img{max-width:100%;max-height:200px;border-radius:6px;border:1px solid var(--border);cursor:pointer;object-fit:cover;display:block;}
+.ev-photo-del{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:4px;font-size:11px;padding:2px 6px;cursor:pointer;}
+.action-btn{background:none;border:1px solid var(--border);cursor:pointer;color:var(--ink3);font-size:11px;padding:2px 7px;border-radius:4px;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;}
+.action-btn:hover{border-color:var(--ink);color:var(--ink);}
+.action-btn.danger:hover{border-color:var(--red);color:var(--red);}
+/* 編輯面板 */
+.edit-panel{display:none;margin-top:8px;padding:10px;background:rgba(0,0,0,0.03);border-radius:8px;border:1px solid var(--border);}
+.edit-panel.show{display:block;}
+.edit-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;}
+.edit-row input{flex:1;min-width:80px;font-family:'Noto Sans TC',sans-serif;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--ink);outline:none;}
+.edit-row input:focus{border-color:var(--ink);}
+.edit-save-btn{background:var(--ink);color:var(--cream);border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;}
+.edit-save-btn:disabled{opacity:0.4;}
+/* 補照片面板 */
+.photo-panel{display:none;margin-top:8px;padding:10px;background:rgba(0,0,0,0.03);border-radius:8px;border:1px solid var(--border);}
+.photo-panel.show{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.photo-panel input[type=file]{font-size:12px;}
+.photo-save-btn{background:var(--ink);color:var(--cream);border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;}
+.photo-save-btn:disabled{opacity:0.4;}
+.loading{text-align:center;padding:40px;color:var(--ink3);font-size:13px;}
+.lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;}
+.lightbox.show{display:flex;}
+.lightbox img{max-width:90%;max-height:90%;border-radius:8px;}
+.lightbox-close{position:absolute;top:20px;right:24px;color:#fff;font-size:28px;cursor:pointer;background:none;border:none;}
+@media(max-width:560px){
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .site-header-inner{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header-inner">
+    <div>
+      <div class="cat-name">珊迪 Sandy <span class="cat-badge">CKD 監測中</span></div>
+      <div class="header-meta">主治：沈醫師 @ 恩亞動物醫院 · 記錄自 2026-04-16</div>
+    </div>
+    <div class="header-meta"><span class="sync-dot" id="sync-dot"></span><span id="last-updated">連線中…</span></div>
+  </div>
+</header>
+
+<div class="main">
+  <div id="banner-area"></div>
+  <div class="stats" id="stats-area">
+    <div class="stat"><div class="stat-lbl">今日正常排尿</div><div class="stat-val" style="color:var(--blue)">—</div></div>
+    <div class="stat"><div class="stat-lbl">今日正常排便</div><div class="stat-val" style="color:var(--green)">—</div></div>
+    <div class="stat"><div class="stat-lbl">今日異常事件</div><div class="stat-val" style="color:var(--red)">—</div></div>
+  </div>
+
+  <div class="add-form">
+    <div class="form-title">新增記錄</div>
+    <div class="form-row">
+      <input type="date" id="f-date" style="max-width:145px"/>
+      <input type="time" id="f-time" style="max-width:95px"/>
+      <select id="f-type" style="max-width:150px" onchange="onTypeChange()">
+        <option value="urine">排尿</option>
+        <option value="stool">排便</option>
+        <option value="drink">喝水</option>
+        <option value="eat">進食</option>
+        <option value="vomit">嘔吐</option>
+        <option value="medical">就醫／處置</option>
+        <option value="alert">異常行為</option>
+        <option value="other">其他</option>
+      </select>
+      <input type="text" id="f-note" placeholder="備註（可選）"/>
+      <button class="submit-btn" id="submit-btn" onclick="addEvent()">新增</button>
+    </div>
+    <div class="stool-quality" id="stool-quality">
+      <button class="sq-btn" id="sq-normal" onclick="selectStoolQuality('normal')">✓ 正常便便</button>
+      <button class="sq-btn" id="sq-abnormal" onclick="selectStoolQuality('abnormal')">✕ 異常（羊便便／稀）</button>
+    </div>
+    <div class="photo-input-row">
+      <input type="file" id="f-photo" accept="image/*" onchange="onPhotoSelected()"/>
+      <div id="photo-preview-area"></div>
+    </div>
+    <div class="save-status" id="save-status"></div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="fbtn on" onclick="setFilter('all',this)">全部</button>
+    <button class="fbtn" onclick="setFilter('urine',this)">排尿</button>
+    <button class="fbtn" onclick="setFilter('stool',this)">排便</button>
+    <button class="fbtn" onclick="setFilter('drink',this)">喝水</button>
+    <button class="fbtn" onclick="setFilter('eat',this)">進食</button>
+    <button class="fbtn" onclick="setFilter('medical',this)">就醫</button>
+    <button class="fbtn" onclick="setFilter('alert',this)">異常</button>
+  </div>
+  <div id="timeline-area"><div class="loading">連線資料庫中…</div></div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt=""/>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBttv17Va1SV4i0mu-osawa8m-aw_iK-vA",
+  authDomain: "sandy-health.firebaseapp.com",
+  projectId: "sandy-health",
+  storageBucket: "sandy-health.firebasestorage.app",
+  messagingSenderId: "640714223664",
+  appId: "1:640714223664:web:7ed758ae7519e73180bdf5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const TM={
+  urine:  {label:'排尿',    color:'#185FA5',bg:'#DCEEFB',dot:'#378ADD'},
+  stool:  {label:'排便',    color:'#2A5C1A',bg:'#D6EDD9',dot:'#4A9B3A'},
+  drink:  {label:'喝水',    color:'#0F5E56',bg:'#D1EDE9',dot:'#1D9E75'},
+  eat:    {label:'進食',    color:'#7A4D05',bg:'#FDE8B8',dot:'#D4890A'},
+  vomit:  {label:'嘔吐',    color:'#7B1F1A',bg:'#FDECEA',dot:'#C0392B'},
+  medical:{label:'就醫',    color:'#3A2580',bg:'#E5DFFD',dot:'#7B6BC8'},
+  alert:  {label:'異常行為',color:'#7B1F1A',bg:'#FDECEA',dot:'#C0392B'},
+  other:  {label:'其他',    color:'#5A5750',bg:'#F1EFE8',dot:'#9A9590'},
+};
+
+let events=[];
+let activeFilter='all';
+let stoolQuality=null;
+let photoBase64=null;
+
+function pad(n){return String(n).padStart(2,'0');}
+function todayStr(){const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
+function nowT(){const d=new Date();return `${pad(d.getHours())}:${pad(d.getMinutes())}`;}
+
+document.getElementById('f-date').value=todayStr();
+document.getElementById('f-time').value=nowT();
+setInterval(()=>{document.getElementById('f-time').value=nowT();},30000);
+
+function compressAndRead(file,cb){
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const canvas=document.createElement('canvas');
+      const max=800;let w=img.width,h=img.height;
+      if(w>max){h=h*max/w;w=max;}
+      if(h>max){w=w*max/h;h=max;}
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      cb(canvas.toDataURL('image/jpeg',0.75));
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+window.onTypeChange=function(){
+  const t=document.getElementById('f-type').value;
+  const sq=document.getElementById('stool-quality');
+  if(t==='stool') sq.classList.add('show');
+  else{sq.classList.remove('show');stoolQuality=null;document.getElementById('sq-normal').className='sq-btn';document.getElementById('sq-abnormal').className='sq-btn';}
+}
+
+window.selectStoolQuality=function(q){
+  stoolQuality=q;
+  document.getElementById('sq-normal').className='sq-btn'+(q==='normal'?' selected-normal':'');
+  document.getElementById('sq-abnormal').className='sq-btn'+(q==='abnormal'?' selected-abnormal':'');
+}
+
+window.onPhotoSelected=function(){
+  const file=document.getElementById('f-photo').files[0];
+  if(!file) return;
+  compressAndRead(file,b64=>{
+    photoBase64=b64;
+    document.getElementById('photo-preview-area').innerHTML=`
+      <div class="photo-preview-wrap">
+        <img src="${b64}" class="photo-preview"/>
+        <button class="photo-remove-new" onclick="removePhoto()">✕</button>
+      </div>`;
+  });
+}
+
+window.removePhoto=function(){
+  photoBase64=null;
+  document.getElementById('f-photo').value='';
+  document.getElementById('photo-preview-area').innerHTML='';
+}
+
+window.openLightbox=function(src){
+  document.getElementById('lightbox-img').src=src;
+  document.getElementById('lightbox').classList.add('show');
+}
+window.closeLightbox=function(){document.getElementById('lightbox').classList.remove('show');}
+
+// 切換編輯面板
+window.toggleEdit=function(sid){
+  const p=document.getElementById('edit-panel-'+sid);
+  p.classList.toggle('show');
+}
+
+// 儲存編輯
+window.saveEdit=async function(docId,sid){
+  const time=document.getElementById('edit-time-'+sid).value;
+  const note=document.getElementById('edit-note-'+sid).value;
+  const date=document.getElementById('edit-date-'+sid).value;
+  if(!time||!date) return;
+  const btn=document.getElementById('edit-save-'+sid);
+  btn.disabled=true;btn.textContent='儲存中…';
+  try{
+    await updateDoc(doc(db,'events',docId),{time,note,date,datetime:date+'T'+time});
+    document.getElementById('edit-panel-'+sid).classList.remove('show');
+  }catch(e){alert('儲存失敗：'+e.message);}
+  btn.disabled=false;btn.textContent='儲存';
+}
+
+// 切換補照片面板
+window.togglePhoto=function(sid){
+  const p=document.getElementById('photo-panel-'+sid);
+  p.classList.toggle('show');
+}
+
+// 補照片選擇
+window.onPanelPhotoSelected=function(sid){
+  const input=document.getElementById('panel-file-'+sid);
+  const file=input.files[0];
+  if(!file) return;
+  compressAndRead(file,b64=>{input.dataset.b64=b64;});
+}
+
+// 儲存補照片
+window.savePanelPhoto=async function(docId,sid){
+  const input=document.getElementById('panel-file-'+sid);
+  const b64=input.dataset.b64;
+  if(!b64){alert('請先選擇照片');return;}
+  const btn=document.getElementById('photo-save-'+sid);
+  btn.disabled=true;btn.textContent='儲存中…';
+  try{
+    await updateDoc(doc(db,'events',docId),{photo:b64});
+    document.getElementById('photo-panel-'+sid).classList.remove('show');
+  }catch(e){alert('儲存失敗：'+e.message);}
+  btn.disabled=false;btn.textContent='儲存照片';
+}
+
+// 刪除照片
+window.deletePhoto=async function(docId){
+  if(!confirm('確定刪除這張照片？記錄本身會保留。')) return;
+  await updateDoc(doc(db,'events',docId),{photo:null});
+}
+
+const q=query(collection(db,"events"),orderBy("datetime","desc"));
+onSnapshot(q,snapshot=>{
+  events=snapshot.docs.map(d=>({id:d.id,...d.data()}));
+  document.getElementById('sync-dot').className='sync-dot live';
+  const now=new Date();
+  document.getElementById('last-updated').textContent=`即時同步 ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  render();
+});
+
+window.addEvent=async function(){
+  const date=document.getElementById('f-date').value;
+  const time=document.getElementById('f-time').value;
+  const type=document.getElementById('f-type').value;
+  const note=document.getElementById('f-note').value.trim();
+  if(!date||!time) return;
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true;btn.textContent='儲存中…';
+  const isGood=type==='drink'||type==='eat'||
+    (type==='urine'&&!note.includes('無尿'))||
+    (type==='stool'&&stoolQuality==='normal');
+  const isUrgent=type==='alert'||type==='vomit'||
+    (type==='stool'&&stoolQuality==='abnormal');
+  try{
+    await addDoc(collection(db,"events"),{
+      date,time,type,note,
+      urgent:isUrgent,good:isGood,
+      med:type==='medical',
+      doc:type==='medical'&&note.includes('醫師'),
+      stoolQuality:type==='stool'?(stoolQuality||null):null,
+      photo:photoBase64||null,
+      datetime:date+'T'+time
+    });
+    document.getElementById('f-note').value='';
+    document.getElementById('f-time').value=nowT();
+    stoolQuality=null;photoBase64=null;
+    document.getElementById('f-photo').value='';
+    document.getElementById('photo-preview-area').innerHTML='';
+    document.getElementById('sq-normal').className='sq-btn';
+    document.getElementById('sq-abnormal').className='sq-btn';
+    document.getElementById('stool-quality').classList.remove('show');
+    document.getElementById('f-type').value='urine';
+    document.getElementById('save-status').textContent='✓ 已同步至雲端';
+    setTimeout(()=>{document.getElementById('save-status').textContent='';},2000);
+  }catch(e){
+    document.getElementById('save-status').textContent='儲存失敗：'+e.message;
+  }
+  btn.disabled=false;btn.textContent='新增';
+}
+
+window.deleteEvent=async function(id){
+  if(!confirm('確定刪除這筆記錄？')) return;
+  await deleteDoc(doc(db,"events",id));
+}
+
+window.setFilter=function(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderTimeline();
+}
+
+function renderBanner(){
+  const te=events.filter(e=>e.date===todayStr());
+  const alertN=te.filter(e=>e.urgent).length;
+  const lastU=events.filter(e=>e.type==='urine'&&e.good).sort((a,b)=>a.datetime<b.datetime?1:-1)[0];
+  let sinceH=999;
+  if(lastU) sinceH=(Date.now()-new Date(lastU.datetime))/3600000;
+  let html='';
+  if(sinceH>4) html=`<div class="banner red"><div class="banner-title">警示</div>距離最後一次正常排尿已超過 ${Math.floor(sinceH)} 小時，請立即聯絡沈醫師。</div>`;
+  else if(alertN>0) html=`<div class="banner amber"><div class="banner-title">今日有異常記錄</div>持續觀察頻尿、蹲下無尿、廁所外漏尿等狀況。如症狀持續請聯絡恩亞動物醫院。</div>`;
+  else html=`<div class="banner green"><div class="banner-title">目前狀況穩定</div>今日尚無異常事件記錄，持續觀察中。</div>`;
+  document.getElementById('banner-area').innerHTML=html;
+}
+
+function renderStats(){
+  const te=events.filter(e=>e.date===todayStr());
+  const urineOk=te.filter(e=>e.type==='urine'&&e.good).length;
+  const stoolOk=te.filter(e=>e.type==='stool'&&e.stoolQuality==='normal').length;
+  const alertN=te.filter(e=>e.urgent).length;
+  document.getElementById('stats-area').innerHTML=`
+    <div class="stat"><div class="stat-lbl">今日正常排尿</div><div class="stat-val" style="color:var(--blue)">${urineOk}</div></div>
+    <div class="stat"><div class="stat-lbl">今日正常排便</div><div class="stat-val" style="color:var(--green)">${stoolOk}</div></div>
+    <div class="stat"><div class="stat-lbl">今日異常事件</div><div class="stat-val" style="color:${alertN>0?'var(--red)':'var(--green)'}">${alertN}</div></div>`;
+}
+
+function renderTimeline(){
+  const container=document.getElementById('timeline-area');
+  const list=activeFilter==='all'?events:events.filter(e=>e.type===activeFilter);
+  if(!list.length){container.innerHTML='<div class="loading">尚無此類記錄</div>';return;}
+  const groups={};
+  list.forEach(e=>{if(!groups[e.date])groups[e.date]=[];groups[e.date].push(e);});
+  const dates=Object.keys(groups).sort((a,b)=>a<b?1:-1);
+  const DN=['日','一','二','三','四','五','六'];
+  let html='';
+  dates.forEach(d=>{
+    const dt=new Date(d+'T12:00:00');
+    const lbl=d===todayStr()?`今天 ${dt.getMonth()+1}/${dt.getDate()}（${DN[dt.getDay()]}）`:`${dt.getFullYear()}/${dt.getMonth()+1}/${dt.getDate()}（${DN[dt.getDay()]}）`;
+    html+=`<div class="day-block"><div class="day-hdr">${lbl}</div>`;
+    const de=groups[d].slice().sort((a,b)=>a.time<b.time?1:-1);
+    de.forEach((e,i)=>{
+      const m=TM[e.type]||TM.other;
+      const notLast=i<de.length-1;
+      let cls='ev-card';
+      if(e.urgent) cls='ev-card u-red';
+      else if(e.good) cls='ev-card u-green';
+      else if(e.med) cls='ev-card u-purple';
+      else if(e.doc) cls='ev-card u-amber';
+
+      const sid=e.id.replace(/[^a-zA-Z0-9]/g,'_');
+
+      let qualityBadge='';
+      if(e.type==='stool'&&e.stoolQuality){
+        qualityBadge=e.stoolQuality==='normal'
+          ?`<span style="font-size:11px;padding:2px 7px;border-radius:99px;background:#D6EDD9;color:#2A5C1A;font-weight:500;">正常</span>`
+          :`<span style="font-size:11px;padding:2px 7px;border-radius:99px;background:#FDECEA;color:#7B1F1A;font-weight:500;">異常</span>`;
+      }
+
+      let photoHtml='';
+      if(e.photo){
+        photoHtml=`<div class="ev-photo">
+          <img src="${e.photo}" onclick="openLightbox('${e.photo}')" title="點擊放大"/>
+          <button class="ev-photo-del" onclick="deletePhoto('${e.id}')">刪除照片</button>
+        </div>`;
+      }
+
+      html+=`<div class="ev-row">
+        <div class="ev-dot-col">
+          <div class="ev-dot" style="background:${m.dot}"></div>
+          ${notLast?'<div class="ev-line"></div>':''}
+        </div>
+        <div class="${cls}">
+          <div class="ev-card-top">
+            <div style="flex:1;min-width:0">
+              <div class="ev-time">${e.time}</div>
+              <div class="ev-meta">
+                <span class="ev-tag" style="background:${m.bg};color:${m.color}">${m.label}</span>
+                ${qualityBadge}
+                <span class="ev-note">${e.note||''}</span>
+              </div>
+            </div>
+            <div class="ev-card-actions">
+              <button class="action-btn" onclick="toggleEdit('${sid}')">編輯</button>
+              <button class="action-btn" onclick="togglePhoto('${sid}')">${e.photo?'換照片':'補照片'}</button>
+              <button class="action-btn danger" onclick="deleteEvent('${e.id}')">刪除</button>
+            </div>
+          </div>
+          ${photoHtml}
+          <div class="edit-panel" id="edit-panel-${sid}">
+            <div class="edit-row">
+              <input type="date" id="edit-date-${sid}" value="${e.date}" style="max-width:130px"/>
+              <input type="time" id="edit-time-${sid}" value="${e.time}" style="max-width:95px"/>
+              <input type="text" id="edit-note-${sid}" value="${(e.note||'').replace(/"/g,'&quot;')}" placeholder="備註"/>
+              <button class="edit-save-btn" id="edit-save-${sid}" onclick="saveEdit('${e.id}','${sid}')">儲存</button>
+            </div>
+          </div>
+          <div class="photo-panel" id="photo-panel-${sid}">
+            <input type="file" id="panel-file-${sid}" accept="image/*" onchange="onPanelPhotoSelected('${sid}')"/>
+            <button class="photo-save-btn" id="photo-save-${sid}" onclick="savePanelPhoto('${e.id}','${sid}')">儲存照片</button>
+          </div>
+        </div>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  container.innerHTML=html;
+}
+
+function render(){renderBanner();renderStats();renderTimeline();}
+</script>
+</body>
+</html>
