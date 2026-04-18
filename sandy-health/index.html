@@ -23,6 +23,8 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .cat-name{font-size:22px;font-weight:700;letter-spacing:-0.5px;display:flex;align-items:center;gap:8px;}
 .cat-badge{background:var(--ink);color:var(--cream);font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px;letter-spacing:1px;font-family:'DM Mono',monospace;}
 .header-meta{font-size:12px;color:var(--ink3);font-family:'DM Mono',monospace;}
+.sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#aaa;margin-right:5px;vertical-align:middle;}
+.sync-dot.live{background:#2A7D4F;}
 .main{max-width:760px;margin:0 auto;padding:20px 24px 60px;}
 .banner{border-radius:var(--radius);padding:12px 16px;font-size:13px;line-height:1.7;margin-bottom:16px;border:1px solid transparent;}
 .banner.red{background:var(--red-light);border-color:#EFBBB8;color:#7B1F1A;}
@@ -47,7 +49,7 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .fbtn{font-size:12px;padding:4px 12px;border-radius:99px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--ink2);font-family:'Noto Sans TC',sans-serif;transition:all 0.15s;}
 .fbtn.on{background:var(--ink);color:var(--cream);border-color:var(--ink);}
 .day-block{margin-bottom:28px;}
-.day-hdr{font-size:11px;font-weight:700;color:var(--ink3);letter-spacing:1.5px;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:10px;padding-left:32px;}
+.day-hdr{font-size:11px;font-weight:700;color:var(--ink3);letter-spacing:1.5px;font-family:'DM Mono',monospace;margin-bottom:10px;padding-left:32px;}
 .ev-row{display:flex;gap:10px;align-items:flex-start;padding:4px 0;}
 .ev-dot-col{display:flex;flex-direction:column;align-items:center;width:22px;flex-shrink:0;}
 .ev-dot{width:10px;height:10px;border-radius:50%;margin-top:5px;flex-shrink:0;}
@@ -75,9 +77,9 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
   <div class="site-header-inner">
     <div>
       <div class="cat-name">珊迪 Sandy <span class="cat-badge">CKD 監測中</span></div>
-      <div class="header-meta">主治：沈醫師 @ 恩亞動物醫院 · 記錄自 2025-04-16</div>
+      <div class="header-meta">主治：沈醫師 @ 恩亞動物醫院 · 記錄自 2026-04-16</div>
     </div>
-    <div class="header-meta" id="last-updated"></div>
+    <div class="header-meta"><span class="sync-dot" id="sync-dot"></span><span id="last-updated">連線中…</span></div>
   </div>
 </header>
 
@@ -118,10 +120,26 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
     <button class="fbtn" onclick="setFilter('medical',this)">就醫</button>
     <button class="fbtn" onclick="setFilter('alert',this)">異常</button>
   </div>
-  <div id="timeline-area"><div class="loading">載入中…</div></div>
+  <div id="timeline-area"><div class="loading">連線資料庫中…</div></div>
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBttv17Va1SV4i0mu-osawa8m-aw_iK-vA",
+  authDomain: "sandy-health.firebaseapp.com",
+  projectId: "sandy-health",
+  storageBucket: "sandy-health.firebasestorage.app",
+  messagingSenderId: "640714223664",
+  appId: "1:640714223664:web:7ed758ae7519e73180bdf5",
+  measurementId: "G-6V298TBQ8K"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const TM={
   urine:  {label:'排尿',    color:'#185FA5',bg:'#DCEEFB',dot:'#378ADD'},
   stool:  {label:'排便',    color:'#2A5C1A',bg:'#D6EDD9',dot:'#4A9B3A'},
@@ -133,37 +151,6 @@ const TM={
   other:  {label:'其他',    color:'#5A5750',bg:'#F1EFE8',dot:'#9A9590'},
 };
 
-const STORAGE_KEY='sandy-events-v1';
-const DEFAULT=[
-  {id:'d1', date:'2025-04-16',time:'00:00',type:'other',  note:'近期數日喝水量小幅下降',urgent:false,good:false},
-  {id:'d2', date:'2025-04-16',time:'12:00',type:'stool',  note:'羊便便、便秘感',urgent:true,good:false},
-  {id:'d3', date:'2025-04-17',time:'12:00',type:'medical',note:'恩亞動物醫院 沈醫師 — 健康檢查 + 皮下輸液',urgent:false,good:false,med:true},
-  {id:'d4', date:'2025-04-17',time:'20:20',type:'stool',  note:'正常完整大便（輸液後恢復）✓',urgent:false,good:true},
-  {id:'d5', date:'2025-04-18',time:'08:30',type:'urine',  note:'正常尿量（意泡尿）✓',urgent:false,good:true},
-  {id:'d6', date:'2025-04-18',time:'08:30',type:'alert',  note:'開始頻繁進出廁所，無明顯排出',urgent:true,good:false},
-  {id:'d7', date:'2025-04-18',time:'09:00',type:'alert',  note:'客廳蹲下4-5次，地板滴尿',urgent:true,good:false},
-  {id:'d8', date:'2025-04-18',time:'09:06',type:'stool',  note:'羊便便3小粒，乾硬分散',urgent:true,good:false},
-  {id:'d9', date:'2025-04-18',time:'09:29',type:'stool',  note:'軟條狀但量少偏細',urgent:true,good:false},
-  {id:'d10',date:'2025-04-18',time:'09:45',type:'other',  note:'廁所旁地毯趴著休息、舔毛（舔尿漬）',urgent:false,good:false},
-  {id:'d11',date:'2025-04-18',time:'09:50',type:'other',  note:'趴著閉眼休息',urgent:false,good:false},
-  {id:'d12',date:'2025-04-18',time:'09:55',type:'drink',  note:'主動起來喝水 ✓',urgent:false,good:true},
-  {id:'d13',date:'2025-04-18',time:'09:58',type:'alert',  note:'走道漏尿一小灘；廁所砂中蹲下無尿',urgent:true,good:false},
-  {id:'d14',date:'2025-04-18',time:'10:00',type:'other',  note:'到處走逛、聞東西',urgent:false,good:false},
-  {id:'d15',date:'2025-04-18',time:'10:02',type:'alert',  note:'廁所蹲下，無尿',urgent:true,good:false},
-  {id:'d16',date:'2025-04-18',time:'10:03',type:'other',  note:'回小地方趴著休息',urgent:false,good:false},
-  {id:'d17',date:'2025-04-18',time:'10:15',type:'drink',  note:'主動喝水 ✓',urgent:false,good:true},
-  {id:'d18',date:'2025-04-18',time:'10:20',type:'other',  note:'側趴休息，姿勢放鬆（非弓背縮團）',urgent:false,good:false},
-  {id:'d19',date:'2025-04-18',time:'10:30',type:'medical',note:'電話聯絡恩亞 — 醫院請先觀察，等珊迪睡醒',urgent:false,good:false,med:true},
-  {id:'d20',date:'2025-04-18',time:'12:00',type:'medical',note:'沈醫師來電：可能為泌尿道感染 或 昨日就醫壓力緊迫反應。建議下午觀察，若仍頻尿今晚安排超音波（需先吃乖丸）',urgent:false,good:false,doc:true},
-  {id:'d21',date:'2025-04-18',time:'13:00',type:'other',  note:'睡醒，睡姿正常甜美，睡得很好 ✓',urgent:false,good:true},
-  {id:'d22',date:'2025-04-18',time:'13:10',type:'other',  note:'冰箱區貓抓板趴5分鐘，呼嚕呼嚕，狀態開心 ✓',urgent:false,good:true},
-  {id:'d23',date:'2025-04-18',time:'13:20',type:'other',  note:'進山洞休息睡覺',urgent:false,good:false},
-  {id:'d24',date:'2025-04-18',time:'16:00',type:'eat',    note:'新包裝腎處方飼料，衝出山洞吃光光，食慾極佳 ✓',urgent:false,good:true},
-  {id:'d25',date:'2025-04-18',time:'16:10',type:'urine',  note:'廁所正常尿尿，尿量正常 ✓✓',urgent:false,good:true},
-  {id:'d26',date:'2025-04-18',time:'16:15',type:'drink',  note:'Brita濾芯過濾水（新嘗試），爸爸端進山洞，主動喝 35ml ✓',urgent:false,good:true},
-  {id:'d27',date:'2025-04-18',time:'16:20',type:'other',  note:'回山洞準備休息睡覺',urgent:false,good:false},
-];
-
 let events=[];
 let activeFilter='all';
 
@@ -171,32 +158,21 @@ function pad(n){return String(n).padStart(2,'0');}
 function todayStr(){const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
 function nowT(){const d=new Date();return `${pad(d.getHours())}:${pad(d.getMinutes())}`;}
 
-function loadEvents(){
-  try{
-    const raw=localStorage.getItem(STORAGE_KEY);
-    events=raw?JSON.parse(raw):[...DEFAULT];
-  }catch(e){events=[...DEFAULT];}
-  updateLastUpdated();
+document.getElementById('f-date').value=todayStr();
+document.getElementById('f-time').value=nowT();
+setInterval(()=>{document.getElementById('f-time').value=nowT();},30000);
+
+// 即時監聽 Firestore
+const q = query(collection(db, "events"), orderBy("datetime", "desc"));
+onSnapshot(q, (snapshot) => {
+  events = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
+  document.getElementById('sync-dot').className='sync-dot live';
+  const now=new Date();
+  document.getElementById('last-updated').textContent=`即時同步 ${pad(now.getHours())}:${pad(now.getMinutes())}`;
   render();
-}
+});
 
-function saveEvents(){
-  try{
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(events));
-    updateLastUpdated();
-    document.getElementById('save-status').textContent='✓ 已儲存';
-    setTimeout(()=>{document.getElementById('save-status').textContent='';},2000);
-  }catch(e){
-    document.getElementById('save-status').textContent='儲存失敗';
-  }
-}
-
-function updateLastUpdated(){
-  const n=new Date();
-  document.getElementById('last-updated').textContent=`更新於 ${pad(n.getHours())}:${pad(n.getMinutes())}`;
-}
-
-function addEvent(){
+window.addEvent = async function() {
   const date=document.getElementById('f-date').value;
   const time=document.getElementById('f-time').value;
   const type=document.getElementById('f-type').value;
@@ -205,21 +181,31 @@ function addEvent(){
   const btn=document.getElementById('submit-btn');
   btn.disabled=true; btn.textContent='儲存中…';
   const isGood=type==='drink'||type==='eat'||(type==='urine'&&!note.includes('無尿'));
-  events.push({id:'u'+Date.now(),date,time,type,note,urgent:type==='alert'||type==='vomit',good:isGood});
-  events.sort((a,b)=>(a.date+a.time)<(b.date+b.time)?1:-1);
-  document.getElementById('f-note').value='';
-  document.getElementById('f-time').value=nowT();
-  saveEvents(); render();
+  const isMed=type==='medical';
+  const isDoc=note.includes('醫師') && type==='medical';
+  try {
+    await addDoc(collection(db,"events"), {
+      date, time, type, note,
+      urgent: type==='alert'||type==='vomit',
+      good: isGood, med: isMed, doc: isDoc,
+      datetime: date+'T'+time
+    });
+    document.getElementById('f-note').value='';
+    document.getElementById('f-time').value=nowT();
+    document.getElementById('save-status').textContent='✓ 已同步至雲端';
+    setTimeout(()=>{document.getElementById('save-status').textContent='';},2000);
+  } catch(e) {
+    document.getElementById('save-status').textContent='儲存失敗：'+e.message;
+  }
   btn.disabled=false; btn.textContent='新增';
 }
 
-function deleteEvent(id){
+window.deleteEvent = async function(id) {
   if(!confirm('確定刪除這筆記錄？')) return;
-  events=events.filter(e=>e.id!==id);
-  saveEvents(); render();
+  await deleteDoc(doc(db,"events",id));
 }
 
-function setFilter(f,btn){
+window.setFilter = function(f,btn) {
   activeFilter=f;
   document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
@@ -229,9 +215,9 @@ function setFilter(f,btn){
 function renderBanner(){
   const te=events.filter(e=>e.date===todayStr());
   const alertN=te.filter(e=>e.urgent).length;
-  const lastU=events.filter(e=>e.type==='urine'&&e.good).sort((a,b)=>(a.date+a.time)>(b.date+b.time)?-1:1)[0];
+  const lastU=events.filter(e=>e.type==='urine'&&e.good).sort((a,b)=>a.datetime<b.datetime?1:-1)[0];
   let sinceH=999;
-  if(lastU) sinceH=(Date.now()-new Date(lastU.date+'T'+lastU.time))/3600000;
+  if(lastU) sinceH=(Date.now()-new Date(lastU.datetime))/3600000;
   let html='';
   if(sinceH>4){
     html=`<div class="banner red"><div class="banner-title">警示</div>距離最後一次正常排尿已超過 ${Math.floor(sinceH)} 小時，請立即聯絡沈醫師。</div>`;
@@ -248,9 +234,9 @@ function renderStats(){
   const urineOk=te.filter(e=>e.type==='urine'&&e.good).length;
   const alertN=te.filter(e=>e.urgent).length;
   const drinkN=te.filter(e=>e.type==='drink').length;
-  const lastU=events.filter(e=>e.type==='urine'&&e.good).sort((a,b)=>(a.date+a.time)>(b.date+b.time)?-1:1)[0];
+  const lastU=events.filter(e=>e.type==='urine'&&e.good).sort((a,b)=>a.datetime<b.datetime?1:-1)[0];
   let since='—';
-  if(lastU){const h=Math.floor((Date.now()-new Date(lastU.date+'T'+lastU.time))/3600000);since=h<1?'剛剛':h<24?`${h}h 前`:`${Math.floor(h/24)}d 前`;}
+  if(lastU){const h=Math.floor((Date.now()-new Date(lastU.datetime))/3600000);since=h<1?'剛剛':h<24?`${h}h 前`:`${Math.floor(h/24)}d 前`;}
   document.getElementById('stats-area').innerHTML=`
     <div class="stat"><div class="stat-lbl">今日正常排尿</div><div class="stat-val" style="color:var(--blue)">${urineOk}</div></div>
     <div class="stat"><div class="stat-lbl">今日異常事件</div><div class="stat-val" style="color:${alertN>0?'var(--red)':'var(--green)'}">${alertN}</div></div>
@@ -303,10 +289,6 @@ function renderTimeline(){
 }
 
 function render(){renderBanner();renderStats();renderTimeline();}
-document.getElementById('f-date').value=todayStr();
-document.getElementById('f-time').value=nowT();
-loadEvents();
-setInterval(()=>{document.getElementById('f-time').value=nowT();},30000);
 </script>
 </body>
 </html>
