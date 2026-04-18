@@ -336,7 +336,8 @@ window.savePanelPhotos=async function(docId,sid){
   btn.disabled=true;btn.textContent='儲存中…';
   try{
     await updateDoc(doc(db,'events',docId),{photos,photo:null});
-    document.getElementById('photo-panel-'+sid).classList.remove('show');
+    const panel=document.getElementById('photo-panel-'+sid);
+    if(panel) panel.classList.remove('show');
   }catch(e){alert('儲存失敗：'+e.message);}
   btn.disabled=false;btn.textContent='儲存照片';
 }
