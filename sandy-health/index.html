@@ -45,46 +45,48 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .submit-btn:hover{opacity:0.75;}
 .submit-btn:disabled{opacity:0.4;cursor:default;}
 .save-status{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;text-align:right;margin-top:8px;min-height:16px;}
-/* 照片上傳區 */
 .photo-area{margin-top:4px;}
-.photo-label{font-size:12px;color:var(--ink2);margin-bottom:6px;}
 .photo-input-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 .photo-input{font-size:12px;color:var(--ink2);}
 .photo-preview{width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid var(--border);}
 .photo-preview-wrap{position:relative;display:inline-block;}
-.photo-remove{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
-/* 正常/異常選擇 */
+.photo-remove{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .stool-quality{display:none;gap:8px;margin-top:6px;}
 .stool-quality.show{display:flex;}
 .sq-btn{flex:1;padding:6px;border:1px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--ink2);transition:all 0.15s;}
 .sq-btn.selected-normal{background:var(--green-light);border-color:#B2D9C3;color:#1A5233;font-weight:500;}
 .sq-btn.selected-abnormal{background:var(--red-light);border-color:#EFBBB8;color:#7B1F1A;font-weight:500;}
-/* Filter */
 .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
 .fbtn{font-size:12px;padding:4px 12px;border-radius:99px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--ink2);font-family:'Noto Sans TC',sans-serif;transition:all 0.15s;}
 .fbtn.on{background:var(--ink);color:var(--cream);border-color:var(--ink);}
-/* Timeline */
 .day-block{margin-bottom:28px;}
 .day-hdr{font-size:11px;font-weight:700;color:var(--ink3);letter-spacing:1.5px;font-family:'DM Mono',monospace;margin-bottom:10px;padding-left:32px;}
 .ev-row{display:flex;gap:10px;align-items:flex-start;padding:4px 0;}
 .ev-dot-col{display:flex;flex-direction:column;align-items:center;width:22px;flex-shrink:0;}
 .ev-dot{width:10px;height:10px;border-radius:50%;margin-top:5px;flex-shrink:0;}
 .ev-line{width:1px;flex:1;background:var(--border);min-height:20px;}
-.ev-card{flex:1;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;display:flex;justify-content:space-between;align-items:flex-start;}
+.ev-card{flex:1;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;}
 .ev-card.u-red{background:var(--red-light);border-color:#EFBBB8;}
 .ev-card.u-green{background:var(--green-light);border-color:#B2D9C3;}
 .ev-card.u-purple{background:var(--purple-light);border-color:#C9BCEF;}
 .ev-card.u-amber{background:var(--amber-light);border-color:#F0D89A;}
+.ev-card-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.ev-card-actions{display:flex;gap:4px;flex-shrink:0;}
 .ev-time{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;margin-bottom:3px;}
 .ev-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;}
 .ev-tag{font-size:11px;padding:2px 8px;border-radius:99px;font-weight:500;white-space:nowrap;}
 .ev-note{font-size:12px;color:var(--ink2);}
 .ev-photo{margin-top:6px;}
 .ev-photo img{max-width:100%;max-height:200px;border-radius:6px;border:1px solid var(--border);cursor:pointer;object-fit:cover;}
-.del-btn{background:none;border:none;cursor:pointer;color:var(--ink3);font-size:12px;padding:2px 6px;border-radius:4px;flex-shrink:0;}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--ink3);font-size:12px;padding:2px 6px;border-radius:4px;}
 .del-btn:hover{color:var(--red);}
+.add-photo-btn{background:none;border:1px solid var(--border);cursor:pointer;color:var(--ink3);font-size:11px;padding:2px 7px;border-radius:4px;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;}
+.add-photo-btn:hover{border-color:var(--ink);color:var(--ink);}
+.inline-photo-input{margin-top:6px;display:none;}
+.inline-photo-input.show{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.inline-photo-input input{font-size:12px;}
+.inline-save-btn{font-size:11px;padding:3px 10px;border:none;border-radius:6px;background:var(--ink);color:var(--cream);cursor:pointer;font-family:'Noto Sans TC',sans-serif;}
 .loading{text-align:center;padding:40px;color:var(--ink3);font-size:13px;}
-/* Lightbox */
 .lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;}
 .lightbox.show{display:flex;}
 .lightbox img{max-width:90%;max-height:90%;border-radius:8px;}
@@ -132,21 +134,16 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
       <input type="text" id="f-note" placeholder="備註（可選）"/>
       <button class="submit-btn" id="submit-btn" onclick="addEvent()">新增</button>
     </div>
-
-    <!-- 排便正常/異常 -->
     <div class="stool-quality" id="stool-quality">
       <button class="sq-btn" id="sq-normal" onclick="selectStoolQuality('normal')">✓ 正常便便</button>
       <button class="sq-btn" id="sq-abnormal" onclick="selectStoolQuality('abnormal')">✕ 異常（羊便便／稀）</button>
     </div>
-
-    <!-- 照片上傳 -->
     <div class="photo-area">
       <div class="photo-input-row">
         <input type="file" id="f-photo" accept="image/*" onchange="onPhotoSelected()" class="photo-input"/>
         <div id="photo-preview-area"></div>
       </div>
     </div>
-
     <div class="save-status" id="save-status"></div>
   </div>
 
@@ -162,7 +159,6 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
   <div id="timeline-area"><div class="loading">連線資料庫中…</div></div>
 </div>
 
-<!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <img id="lightbox-img" src="" alt=""/>
@@ -170,7 +166,7 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBttv17Va1SV4i0mu-osawa8m-aw_iK-vA",
@@ -208,87 +204,131 @@ document.getElementById('f-date').value=todayStr();
 document.getElementById('f-time').value=nowT();
 setInterval(()=>{document.getElementById('f-time').value=nowT();},30000);
 
-window.onTypeChange = function(){
+window.onTypeChange=function(){
   const t=document.getElementById('f-type').value;
   const sq=document.getElementById('stool-quality');
   if(t==='stool'){sq.classList.add('show');}
   else{sq.classList.remove('show');stoolQuality=null;document.getElementById('sq-normal').className='sq-btn';document.getElementById('sq-abnormal').className='sq-btn';}
 }
 
-window.selectStoolQuality = function(q){
+window.selectStoolQuality=function(q){
   stoolQuality=q;
   document.getElementById('sq-normal').className='sq-btn'+(q==='normal'?' selected-normal':'');
   document.getElementById('sq-abnormal').className='sq-btn'+(q==='abnormal'?' selected-abnormal':'');
 }
 
-window.onPhotoSelected = function(){
+window.onPhotoSelected=function(){
   const file=document.getElementById('f-photo').files[0];
   if(!file) return;
-  const reader=new FileReader();
-  reader.onload=function(e){
-    photoBase64=e.target.result;
+  compressAndRead(file, b64=>{
+    photoBase64=b64;
     document.getElementById('photo-preview-area').innerHTML=`
       <div class="photo-preview-wrap">
-        <img src="${photoBase64}" class="photo-preview"/>
+        <img src="${b64}" class="photo-preview"/>
         <button class="photo-remove" onclick="removePhoto()">✕</button>
       </div>`;
-  };
-  reader.readAsDataURL(file);
+  });
 }
 
-window.removePhoto = function(){
+window.removePhoto=function(){
   photoBase64=null;
   document.getElementById('f-photo').value='';
   document.getElementById('photo-preview-area').innerHTML='';
 }
 
-window.openLightbox = function(src){
+function compressAndRead(file, cb){
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      const canvas=document.createElement('canvas');
+      const max=800;
+      let w=img.width,h=img.height;
+      if(w>max){h=h*max/w;w=max;}
+      if(h>max){w=w*max/h;h=max;}
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      cb(canvas.toDataURL('image/jpeg',0.75));
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+window.openLightbox=function(src){
   document.getElementById('lightbox-img').src=src;
   document.getElementById('lightbox').classList.add('show');
 }
-window.closeLightbox = function(){
+window.closeLightbox=function(){
   document.getElementById('lightbox').classList.remove('show');
 }
 
-const q = query(collection(db, "events"), orderBy("datetime", "desc"));
-onSnapshot(q, (snapshot) => {
-  events = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
+window.toggleInlinePhoto=function(id){
+  const area=document.getElementById('inline-photo-'+id);
+  area.classList.toggle('show');
+}
+
+window.onInlinePhotoSelected=function(id){
+  const input=document.getElementById('inline-file-'+id);
+  const file=input.files[0];
+  if(!file) return;
+  compressAndRead(file, b64=>{
+    const preview=document.getElementById('inline-preview-'+id);
+    if(preview) preview.src=b64;
+    input.dataset.b64=b64;
+  });
+}
+
+window.saveInlinePhoto=async function(id){
+  const input=document.getElementById('inline-file-'+id);
+  const b64=input.dataset.b64;
+  if(!b64){alert('請先選擇照片');return;}
+  const btn=document.getElementById('inline-save-btn-'+id);
+  btn.disabled=true;btn.textContent='儲存中…';
+  try{
+    await updateDoc(doc(db,'events',id),{photo:b64});
+    btn.textContent='已儲存';
+  }catch(e){
+    btn.textContent='失敗';
+    alert('儲存失敗：'+e.message);
+  }
+}
+
+const q=query(collection(db,"events"),orderBy("datetime","desc"));
+onSnapshot(q,(snapshot)=>{
+  events=snapshot.docs.map(d=>({id:d.id,...d.data()}));
   document.getElementById('sync-dot').className='sync-dot live';
   const now=new Date();
   document.getElementById('last-updated').textContent=`即時同步 ${pad(now.getHours())}:${pad(now.getMinutes())}`;
   render();
 });
 
-window.addEvent = async function(){
+window.addEvent=async function(){
   const date=document.getElementById('f-date').value;
   const time=document.getElementById('f-time').value;
   const type=document.getElementById('f-type').value;
   const note=document.getElementById('f-note').value.trim();
   if(!date||!time) return;
   const btn=document.getElementById('submit-btn');
-  btn.disabled=true; btn.textContent='儲存中…';
-
-  const isGood = type==='drink'||type==='eat'||
+  btn.disabled=true;btn.textContent='儲存中…';
+  const isGood=type==='drink'||type==='eat'||
     (type==='urine'&&!note.includes('無尿'))||
     (type==='stool'&&stoolQuality==='normal');
-  const isUrgent = type==='alert'||type==='vomit'||
+  const isUrgent=type==='alert'||type==='vomit'||
     (type==='stool'&&stoolQuality==='abnormal');
-
   try{
     await addDoc(collection(db,"events"),{
       date,time,type,note,
-      urgent:isUrgent,
-      good:isGood,
+      urgent:isUrgent,good:isGood,
       med:type==='medical',
       doc:type==='medical'&&note.includes('醫師'),
-      stoolQuality: type==='stool'?(stoolQuality||null):null,
-      photo: photoBase64||null,
+      stoolQuality:type==='stool'?(stoolQuality||null):null,
+      photo:photoBase64||null,
       datetime:date+'T'+time
     });
     document.getElementById('f-note').value='';
     document.getElementById('f-time').value=nowT();
-    stoolQuality=null;
-    photoBase64=null;
+    stoolQuality=null;photoBase64=null;
     document.getElementById('f-photo').value='';
     document.getElementById('photo-preview-area').innerHTML='';
     document.getElementById('sq-normal').className='sq-btn';
@@ -300,15 +340,15 @@ window.addEvent = async function(){
   }catch(e){
     document.getElementById('save-status').textContent='儲存失敗：'+e.message;
   }
-  btn.disabled=false; btn.textContent='新增';
+  btn.disabled=false;btn.textContent='新增';
 }
 
-window.deleteEvent = async function(id){
+window.deleteEvent=async function(id){
   if(!confirm('確定刪除這筆記錄？')) return;
   await deleteDoc(doc(db,"events",id));
 }
 
-window.setFilter = function(f,btn){
+window.setFilter=function(f,btn){
   activeFilter=f;
   document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
@@ -378,28 +418,49 @@ function renderTimeline(){
         photoHtml=`<div class="ev-photo"><img src="${e.photo}" onclick="openLightbox('${e.photo}')" title="點擊放大"/></div>`;
       }
 
+      const safeId=e.id.replace(/[^a-zA-Z0-9]/g,'_');
+
       html+=`<div class="ev-row">
         <div class="ev-dot-col">
           <div class="ev-dot" style="background:${m.dot}"></div>
           ${notLast?'<div class="ev-line"></div>':''}
         </div>
         <div class="${cls}">
-          <div style="flex:1;min-width:0">
-            <div class="ev-time">${e.time}</div>
-            <div class="ev-meta">
-              <span class="ev-tag" style="background:${m.bg};color:${m.color}">${m.label}</span>
-              ${qualityBadge}
-              <span class="ev-note">${e.note||''}</span>
+          <div class="ev-card-top">
+            <div style="flex:1;min-width:0">
+              <div class="ev-time">${e.time}</div>
+              <div class="ev-meta">
+                <span class="ev-tag" style="background:${m.bg};color:${m.color}">${m.label}</span>
+                ${qualityBadge}
+                <span class="ev-note">${e.note||''}</span>
+              </div>
             </div>
-            ${photoHtml}
+            <div class="ev-card-actions">
+              <button class="add-photo-btn" onclick="toggleInlinePhoto('${safeId}')">${e.photo?'換照片':'補照片'}</button>
+              <button class="del-btn" onclick="deleteEvent('${e.id}')" title="刪除">✕</button>
+            </div>
           </div>
-          <button class="del-btn" onclick="deleteEvent('${e.id}')" title="刪除">✕</button>
+          ${photoHtml}
+          <div class="inline-photo-input" id="inline-photo-${safeId}">
+            <input type="file" id="inline-file-${safeId}" accept="image/*" onchange="onInlinePhotoSelected('${safeId}')"/>
+            <img id="inline-preview-${safeId}" src="" style="width:50px;height:50px;object-fit:cover;border-radius:4px;display:none;"/>
+            <button class="inline-save-btn" id="inline-save-btn-${safeId}" onclick="saveInlinePhoto('${e.id}')">儲存照片</button>
+          </div>
         </div>
       </div>`;
     });
     html+='</div>';
   });
   container.innerHTML=html;
+
+  // 顯示 inline preview 當選了檔案
+  document.querySelectorAll('[id^=inline-file-]').forEach(input=>{
+    input.addEventListener('change',function(){
+      const sid=this.id.replace('inline-file-','');
+      const preview=document.getElementById('inline-preview-'+sid);
+      if(preview) preview.style.display=this.files.length?'block':'none';
+    });
+  });
 }
 
 function render(){renderBanner();renderStats();renderTimeline();}
