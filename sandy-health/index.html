@@ -518,7 +518,7 @@ function renderBanner(){
   let sinceH=999;
   if(lastU) sinceH=(Date.now()-new Date(lastU.datetime))/3600000;
   let html='';
-  if(sinceH>4) html=`<div class="banner red"><div class="banner-title">警示</div>距離最後一次正常排尿已超過 ${Math.floor(sinceH)} 小時，請立即聯絡沈醫師。</div>`;
+  if(sinceH>7) html=`<div class="banner red"><div class="banner-title">警示</div>距離最後一次正常排尿已超過 ${Math.floor(sinceH)} 小時，請立即聯絡沈醫師。</div>`;
   else if(alertN>0) html=`<div class="banner amber"><div class="banner-title">今日有異常記錄</div>如症狀持續請聯絡恩亞動物醫院。</div>`;
   else html=`<div class="banner green"><div class="banner-title">目前狀況穩定</div>今日尚無異常事件記錄，持續觀察中。</div>`;
   document.getElementById('banner-area').innerHTML=html;
