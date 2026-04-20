@@ -135,7 +135,6 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
     </div>
     <div style="display:flex;align-items:center;gap:10px;">
       <div class="header-meta"><span class="sync-dot" id="sync-dot"></span><span id="last-updated">連線中…</span></div>
-      <button class="lock-btn" id="lock-btn" onclick="toggleLock()">🔒 編輯模式</button>
     </div>
   </div>
 </header>
@@ -148,7 +147,7 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
     <div class="stat"><div class="stat-lbl">今日異常事件</div><div class="stat-val" style="color:var(--red)">—</div></div>
   </div>
 
-  <div class="add-form" id="add-form">
+  <div class="add-form show" id="add-form">
     <div class="form-title">新增記錄</div>
     <div class="form-row">
       <input type="date" id="f-date" style="max-width:145px"/>
@@ -194,18 +193,6 @@ body{background:var(--cream);color:var(--ink);font-family:'Noto Sans TC',sans-se
   <div id="timeline-area"><div class="loading">連線資料庫中…</div></div>
 </div>
 
-<!-- 密碼 Modal -->
-<div class="pw-overlay" id="pw-overlay">
-  <div class="pw-box">
-    <div class="pw-title">輸入編輯密碼</div>
-    <div class="pw-sub">請輸入密碼以進入編輯模式</div>
-    <input type="password" class="pw-input" id="pw-input" maxlength="10" onkeydown="if(event.key==='Enter')checkPw()"/>
-    <div class="pw-error" id="pw-error"></div>
-    <button class="pw-btn" onclick="checkPw()">確認</button>
-    <br/><button class="pw-cancel" onclick="closePwModal()">取消</button>
-  </div>
-</div>
-
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <img id="lightbox-img" src="" alt=""/>
@@ -245,7 +232,7 @@ let events=[];
 let activeFilter='all';
 let quality=null; // 'normal' | 'abnormal' | null
 let newPhotos=[];
-let isUnlocked=false;
+let isUnlocked=true;
 
 function pad(n){return String(n).padStart(2,'0');}
 function todayStr(){const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
@@ -255,42 +242,6 @@ document.getElementById('f-date').value=todayStr();
 document.getElementById('f-time').value=nowT();
 setInterval(()=>{if(document.getElementById('f-time'))document.getElementById('f-time').value=nowT();},30000);
 
-// 密碼相關
-window.toggleLock=function(){
-  if(isUnlocked){
-    isUnlocked=false;
-    document.getElementById('lock-btn').textContent='🔒 編輯模式';
-    document.getElementById('lock-btn').classList.remove('unlocked');
-    document.getElementById('add-form').classList.remove('show');
-    render();
-  } else {
-    document.getElementById('pw-overlay').classList.add('show');
-    setTimeout(()=>document.getElementById('pw-input').focus(),100);
-  }
-}
-
-window.checkPw=function(){
-  const val=document.getElementById('pw-input').value;
-  if(val===PASSWORD){
-    isUnlocked=true;
-    document.getElementById('pw-overlay').classList.remove('show');
-    document.getElementById('pw-input').value='';
-    document.getElementById('pw-error').textContent='';
-    document.getElementById('lock-btn').textContent='🔓 編輯中';
-    document.getElementById('lock-btn').classList.add('unlocked');
-    document.getElementById('add-form').classList.add('show');
-    render();
-  } else {
-    document.getElementById('pw-error').textContent='密碼錯誤，請再試一次';
-    document.getElementById('pw-input').value='';
-  }
-}
-
-window.closePwModal=function(){
-  document.getElementById('pw-overlay').classList.remove('show');
-  document.getElementById('pw-input').value='';
-  document.getElementById('pw-error').textContent='';
-}
 
 // 正常/異常
 window.selectQuality=function(q){
